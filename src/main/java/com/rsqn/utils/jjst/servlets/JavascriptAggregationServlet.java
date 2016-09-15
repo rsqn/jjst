@@ -1,4 +1,4 @@
-package com.rsqn.utils.jjst.actions;
+package com.rsqn.utils.jjst.servlets;
 
 import com.rsqn.utils.jjst.util.JavaScriptMinifier;
 import org.slf4j.Logger;
@@ -13,10 +13,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 
-public class AbstractJSAggregationServlet extends HttpServlet {
+public class JavascriptAggregationServlet extends HttpServlet {
     public static final String NOCOMPILE = "nocompile";
 
-    private static Logger log = LoggerFactory.getLogger(AbstractJSAggregationServlet.class);
+    private static Logger log = LoggerFactory.getLogger(JavascriptAggregationServlet.class);
     private static final Map<String, String> cache = new Hashtable<>();
     private String baseProfiles;
 
@@ -26,6 +26,7 @@ public class AbstractJSAggregationServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
+        super.init(config);
         if (config.getInitParameter("baseProfiles") != null) {
             baseProfiles = config.getInitParameter("baseProfiles");
         } else {
