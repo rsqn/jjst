@@ -9,6 +9,38 @@
     <url>http://maven.apache.org</url>
 
 
+    <parent>
+        <groupId>tech.rsqn</groupId>
+        <artifactId>rsqn-oss-super-pom</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <name>Java Javascript Compilation Web Filters</name>
+    <description>Javascript compilation web filters</description>
+    <url>https://github.com/rsqn/rsqn-oss-super-pom</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License, Version 3.0</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Michael Andrewes</name>
+            <email>mandrewes@roguesquadron.com.au</email>
+            <organization>Rogue Squadron Pty Ltd</organization>
+            <organizationUrl>http://www.roguesquadron.com.au</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:rsqn/jst.git</connection>
+        <developerConnection>scm:git:git@github.com:rsqn/jjst.git</developerConnection>
+        <url>https://github.com/rsqn/jjst</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -23,33 +55,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
-                    <fork>true</fork>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

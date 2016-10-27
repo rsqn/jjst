@@ -1,14 +1,14 @@
-ns("com.roguesquadron.core");
+ns("com.rsqn.jjst.core");
 
 
-com.roguesquadron.core.Templates = function() {
+com.rsqn.jjst.core.Templates = function() {
     this.templates = {};
     this.enableCache = true;
     this.enableTags = true;
 };
 
 
-com.roguesquadron.core.Templates.prototype.getTemplate = function(templateName){
+com.rsqn.jjst.core.Templates.prototype.getTemplate = function(templateName){
     if (this.templates.hasOwnProperty(templateName)) {
         //Logger.debug("Returning Cached Template " + templateName);
         var ret = $(this.templates[templateName]);
@@ -32,7 +32,7 @@ com.roguesquadron.core.Templates.prototype.getTemplate = function(templateName){
     return ret;
 };
 
-com.roguesquadron.core.Templates.prototype.replaceTags = function(tpl) {
+com.rsqn.jjst.core.Templates.prototype.replaceTags = function(tpl) {
 
     tpl.find(".i18n").each(function(i,e){
         var elm= $(e);
@@ -45,7 +45,7 @@ com.roguesquadron.core.Templates.prototype.replaceTags = function(tpl) {
     });
 };
 
-com.roguesquadron.core.Templates.prototype.loadTemplate = function(templateName) {
+com.rsqn.jjst.core.Templates.prototype.loadTemplate = function(templateName) {
     var uri =  rsConstants.contextPath + '/templates/' + templateName;
     Logger.info("Loading template " + templateName + " from " + uri);
 
@@ -58,5 +58,3 @@ com.roguesquadron.core.Templates.prototype.loadTemplate = function(templateName)
 
     return txt;
 };
-
-var rsTemplates = new com.roguesquadron.core.Templates();
