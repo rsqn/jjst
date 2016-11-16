@@ -1,4 +1,4 @@
-package com.rsqn.utils.jjst.filters;
+package tech.rsqn.utils.jjst.filters;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

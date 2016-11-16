@@ -1,6 +1,6 @@
-package com.rsqn.utils.jjst.servlets;
+package tech.rsqn.utils.jjst.servlets;
 
-import com.rsqn.utils.jjst.util.ResourceUtil;
+import tech.rsqn.utils.jjst.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

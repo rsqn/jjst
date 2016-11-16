@@ -1,6 +1,6 @@
-package com.rsqn.utils.jjst.servlets;
+package tech.rsqn.utils.jjst.servlets;
 
-import com.rsqn.utils.jjst.util.ResourceUtil;
+import tech.rsqn.utils.jjst.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
-import java.util.*;
 
 public abstract class AbstractContentServlet extends HttpServlet {
     private static Logger log = LoggerFactory.getLogger(AbstractContentServlet.class);

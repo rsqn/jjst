@@ -1,4 +1,4 @@
-package com.rsqn.utils.jjst.util;
+package tech.rsqn.utils.jjst.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

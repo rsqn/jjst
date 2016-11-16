@@ -1,4 +1,4 @@
-package com.rsqn.utils.jjst.util;
+package tech.rsqn.utils.jjst.util;
 
 
 public class JavaScriptMinifier {
