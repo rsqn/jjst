@@ -2,6 +2,18 @@
 Javascript and CSS Runtime Aggregation Compilation Web Filters
 
 
+What does this do?
+==================
+
+Compiling and then caching aggregated content at runtime means you can
+
+- Aggregates and delivers Javascript sources into a single file at runtime
+ - So your aggregation works the same way for dev, test, prod 
+- Compiles the aggregated file using clojure
+- Caches the result if you want it to (if compiling - you want this)
+- Injects information, such as variables and constants at runtime
+- Does mostly the same stuff for CSS
+
 Why would I want this?
 ======================
 
