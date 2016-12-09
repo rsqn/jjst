@@ -37,9 +37,9 @@ How do I use this?
 ### Add this dependency
 ```
  <dependency>
-            <groupId>com.rsqn.utils</groupId>
+            <groupId>tech.rsqn</groupId>
             <artifactId>jjst</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
  </dependency>
 ```
 
