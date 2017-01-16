@@ -56,14 +56,18 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
 
         File tld = new File(getServletContext().getRealPath("/"));
         String path = request.getRequestURI();
-//
-//        File bootFile = resolveRelativeFileFromUri(request);
-//        String bootFilePath = bootFile.getPath();
+
+        String profileArgs = request.getParameter("profiles");
 
         List<String> profileList = new ArrayList<>();
 
         if (baseProfiles != null) {
             String[] profileSplit = baseProfiles.split(",");
+            Collections.addAll(profileList, profileSplit);
+        }
+
+        if (profileArgs != null) {
+            String[] profileSplit = profileArgs.split(",");
             Collections.addAll(profileList, profileSplit);
         }
 
