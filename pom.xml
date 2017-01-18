@@ -9,7 +9,7 @@
 
     <groupId>tech.rsqn</groupId>
     <artifactId>jjst</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Java Javascript Compilation Web Filters</name>
@@ -36,7 +36,7 @@
         <connection>scm:git:git@github.com:rsqn/jst.git</connection>
         <developerConnection>scm:git:git@github.com:rsqn/jjst.git</developerConnection>
         <url>https://github.com/rsqn/jjst</url>
-      <tag>jjst-1.0.5</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <dependencies>
