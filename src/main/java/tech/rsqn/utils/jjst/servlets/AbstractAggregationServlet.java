@@ -127,7 +127,7 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
             if (line.trim().startsWith(includeToken)) {
                 includeFileName = line.replace(includeToken, "").trim();
                 buffer.append("\n\n\n");
-                buffer.append("// " + includeFileName);
+                buffer.append("/* " + includeFileName + " */");
                 buffer.append("\n\n");
                 aggregateFromFile(buffer, nCwd, includeFileName, profiles);
             }

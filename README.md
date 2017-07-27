@@ -44,7 +44,7 @@ How do I use this?
 ```
 
 ### Add these servlets to your web xml.
-````
+```
  <servlet>
         <servlet-name>jsAggregation</servlet-name>
         <servlet-class>tech.rsqn.utils.jjst.servlets.JavascriptAggregationServlet</servlet-class>
@@ -120,7 +120,3 @@ index.js ->
 ```
 
 
-Whats in here?
-==============
-
-N/A
