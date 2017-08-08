@@ -102,7 +102,7 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
 
         File f = resolveFile(cwd, fileName);
         File nCwd = f.getParentFile();
-        String baseContents = resolveContent(f,fileName);
+        String baseContents = resolveContent(f, fileName);
 
         BufferedReader reader = new BufferedReader(new StringReader(baseContents));
         String line;
@@ -166,6 +166,7 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
                 buffer.append("\n");
             }
         }
+
     }
 }
 

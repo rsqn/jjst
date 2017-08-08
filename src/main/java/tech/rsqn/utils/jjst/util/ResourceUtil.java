@@ -18,8 +18,12 @@ public class ResourceUtil {
 
         InputStream inputStream = ResourceUtil.class.getResourceAsStream(path);
 
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream))) {
-            return buffer.lines().collect(Collectors.joining("\n"));
+        try {
+            try (BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream))) {
+                return buffer.lines().collect(Collectors.joining("\n"));
+            }
+        } finally {
+            inputStream.close();
         }
 
     }
