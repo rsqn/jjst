@@ -46,7 +46,7 @@ How do I use this?
 ### Add these servlets to your web xml.
 ```
  <servlet>
-        <servlet-name>jsAggregation</servlet-name>
+        <servlet-name>jjs</servlet-name>
         <servlet-class>tech.rsqn.utils.jjst.servlets.JavascriptAggregationServlet</servlet-class>
         <async-supported>false</async-supported>
         <init-param>
