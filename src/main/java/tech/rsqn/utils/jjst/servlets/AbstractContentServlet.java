@@ -20,10 +20,6 @@ public abstract class AbstractContentServlet extends HttpServlet {
         super.init(config);
     }
 
-    protected File resolveFile(File cwd, String relativePath) throws IOException {
-        File f = new File(cwd, relativePath);
-        return f;
-    }
 
     protected String getFileContents(File f) throws IOException {
         String content = new String(Files.readAllBytes(f.toPath()));
