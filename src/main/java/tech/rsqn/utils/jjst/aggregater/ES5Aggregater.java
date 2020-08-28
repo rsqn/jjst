@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Collection;
 import java.util.List;
 
 import static tech.rsqn.utils.jjst.util.FileUtil.resolveFile;
@@ -33,7 +34,7 @@ public class ES5Aggregater {
     public static void aggregateFromFile(final StringBuffer buffer,
                                          final File cwd,
                                          final String fileName,
-                                         final List<String> profiles) throws IOException {
+                                         final Collection<String> profiles) throws IOException {
 
         final File f = resolveFile(cwd, fileName);
         final File nCwd = f.getParentFile();

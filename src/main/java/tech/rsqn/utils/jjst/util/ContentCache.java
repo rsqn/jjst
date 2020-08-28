@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Thread safe and fast none blocking when not write cache util,
- * using {@link ReentrantReadWriteLock} and {@line HashMap}.
+ * using {@link ReentrantReadWriteLock} and {@link HashMap}.
  *
  * @param <K> The key type
  * @param <V> The value type

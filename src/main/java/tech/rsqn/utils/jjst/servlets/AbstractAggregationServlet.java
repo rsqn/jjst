@@ -2,6 +2,7 @@ package tech.rsqn.utils.jjst.servlets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.rsqn.utils.jjst.service.Profiles;
 import tech.rsqn.utils.jjst.util.ContentCache;
 import tech.rsqn.utils.jjst.aggregater.ES5Aggregater;
 
@@ -22,9 +23,9 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
     private static Logger log = LoggerFactory.getLogger(AbstractAggregationServlet.class);
     private static final ContentCache<String, String> cache = new ContentCache<>();
 
-    private String baseProfiles;
+    private Profiles baseProfiles;
 
-    private String generateCacheKey(String path, List profiles) {
+    private String generateCacheKey(String path, Collection profiles) {
         return path + profiles;
     }
 
@@ -32,9 +33,9 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         if (config.getInitParameter("baseProfiles") != null) {
-            baseProfiles = config.getInitParameter("baseProfiles");
+            baseProfiles = new Profiles(config.getInitParameter("baseProfiles"));
         } else {
-            baseProfiles = "";
+            baseProfiles = new Profiles();
         }
     }
 
@@ -51,25 +52,14 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
         File tld = new File(getServletContext().getRealPath("/"));
         String path = request.getRequestURI();
 
-        String profileArgs = request.getParameter("profiles");
-
-        List<String> profileList = new ArrayList<>();
-
-        if (baseProfiles != null) {
-            String[] profileSplit = baseProfiles.split(",");
-            Collections.addAll(profileList, profileSplit);
-        }
-
-        if (profileArgs != null) {
-            String[] profileSplit = profileArgs.split(",");
-            Collections.addAll(profileList, profileSplit);
-        }
+        final String profileArgs = request.getParameter("profiles");
+        final Profiles profileList = new Profiles(baseProfiles, profileArgs);
 
         if (profileList.contains(CLEAR_CACHE)) {
             cache.clear();
         }
 
-        String cacheKey = generateCacheKey(path, profileList);
+        String cacheKey = generateCacheKey(path, profileList.getProfiles());
 
         contents = cache.get(cacheKey);
 
@@ -77,12 +67,12 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
             log.debug("Profiles = " + profileList);
 
             final StringBuffer buffer = new StringBuffer();
-            ES5Aggregater.aggregateFromFile(buffer, tld, path, profileList);
+            ES5Aggregater.aggregateFromFile(buffer, tld, path, profileList.getProfiles());
 
             contents = buffer.toString();
             contents = postProcess(contents);
 
-            cache.put(generateCacheKey(path, profileList), contents);
+            cache.put(generateCacheKey(path, profileList.getProfiles()), contents);
 
             log.info("Aggregation of {} complete", path);
         } else {
