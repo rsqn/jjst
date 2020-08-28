@@ -10,23 +10,5 @@ public class JavascriptAggregationServlet extends AbstractAggregationServlet {
     protected String getContentType() {
         return "text/javascript";
     }
-
-    @Override
-    protected String processFileContent(String content) {
-        // copy replace tags code in here
-
-//        if (!profileList.contains(NOCOMPILE)) {
-//            JavaScriptMinifier minifier = new JavaScriptMinifier();
-//            contents = minifier.minify(contents, false);
-//        }
-        return content;
-    }
-
-    @Override
-    protected String postProcess(String content) {
-        return content;
-    }
-
-
 }
 

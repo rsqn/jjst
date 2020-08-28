@@ -84,6 +84,10 @@ public class Profiles {
         return Collections.unmodifiableSet(profileSet);
     }
 
+    @Override
+    public String toString() {
+        return profileSet.toString();
+    }
 
     private void add(final String profiles) {
 

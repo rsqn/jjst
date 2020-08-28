@@ -18,12 +18,18 @@ public class ResourceUtil {
 
         InputStream inputStream = ResourceUtil.class.getResourceAsStream(path);
 
+        if (inputStream == null) {
+            throw new IOException(String.format("Path provided does not exist: %s", path));
+        }
+
         try {
             try (BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream))) {
                 return buffer.lines().collect(Collectors.joining("\n"));
             }
         } finally {
-            inputStream.close();
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
 
     }

@@ -2,19 +2,16 @@ package tech.rsqn.utils.jjst.servlets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.rsqn.utils.jjst.service.AbstractContentService;
+import tech.rsqn.utils.jjst.service.JavascriptES5ContentService;
 import tech.rsqn.utils.jjst.service.Profiles;
 import tech.rsqn.utils.jjst.util.ContentCache;
-import tech.rsqn.utils.jjst.aggregater.ES5Aggregater;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-
-import static tech.rsqn.utils.jjst.service.Profiles.CLEAR_CACHE;
-import static tech.rsqn.utils.jjst.service.Profiles.NO_CACHE;
 
 public abstract class AbstractAggregationServlet extends AbstractContentServlet {
 
@@ -22,10 +19,7 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
     private static final ContentCache<String, String> cache = new ContentCache<>();
 
     private Profiles baseProfiles;
-
-    private String generateCacheKey(String path, Collection profiles) {
-        return path + profiles;
-    }
+    private AbstractContentService contentService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -35,49 +29,23 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
         } else {
             baseProfiles = new Profiles();
         }
+
+        contentService = new JavascriptES5ContentService(baseProfiles);
+
+        log.info("Init completed with baseProfile: {}", baseProfiles);
     }
 
     protected abstract String getContentType();
 
-    protected abstract String processFileContent(String content);
-
-    protected abstract String postProcess(String content);
-
     @Override
-    protected String getContent(HttpServletRequest request) throws ServletException, IOException {
-        String contents = null;
-
-        File tld = new File(getServletContext().getRealPath("/"));
-        String path = request.getRequestURI();
+    protected String getContent(HttpServletRequest request) throws IOException {
+        // current class runner direct, because for servlet the root path is under webapp directory
+        final File cwd = new File(getServletContext().getRealPath("/"));
+        final String contentPath = request.getRequestURI();
 
         final String profileArgs = request.getParameter("profiles");
-        final Profiles profileList = new Profiles(baseProfiles, profileArgs);
 
-        if (profileList.contains(CLEAR_CACHE)) {
-            cache.clear();
-        }
-
-        String cacheKey = generateCacheKey(path, profileList.getProfiles());
-
-        contents = cache.get(cacheKey);
-
-        if (contents == null || profileList.contains(NO_CACHE)) {
-            log.debug("Profiles = " + profileList);
-
-            final StringBuffer buffer = new StringBuffer();
-            ES5Aggregater.aggregateFromFile(buffer, tld, path, profileList.getProfiles());
-
-            contents = buffer.toString();
-            contents = postProcess(contents);
-
-            cache.put(generateCacheKey(path, profileList.getProfiles()), contents);
-
-            log.info("Aggregation of {} complete", path);
-        } else {
-            log.trace("Returning {} from cache ", path);
-        }
-        return contents;
-
+        return contentService.getContent(cwd, contentPath, profileArgs);
     }
 }
 

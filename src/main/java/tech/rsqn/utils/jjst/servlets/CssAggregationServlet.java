@@ -6,14 +6,5 @@ public class CssAggregationServlet extends AbstractAggregationServlet {
         return "text/css";
     }
 
-    @Override
-    protected String processFileContent(String content) {
-        return content;
-    }
-
-    @Override
-    protected String postProcess(String content) {
-        return content;
-    }
 }
 

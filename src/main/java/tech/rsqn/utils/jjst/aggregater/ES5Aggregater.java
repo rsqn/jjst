@@ -15,9 +15,11 @@ import static tech.rsqn.utils.jjst.util.FileUtil.resolveFile;
 
 /**
  */
-public class ES5Aggregater {
+public class ES5Aggregater implements Aggregater {
 
     private static Logger log = LoggerFactory.getLogger(ES5Aggregater.class);
+
+    static final String JS_SPEC = "ES5";
 
     static final String INCLUDE_TOKEN = "#include";
     static final String IF_PROFILE_TOKEN = "#ifprofile";
@@ -31,13 +33,34 @@ public class ES5Aggregater {
     static final int IN_PROFILE_STATE_IGNORE = 1;
     static final int IN_PROFILE_STATE_PROCESS = 2;
 
-    public static void aggregateFromFile(final StringBuffer buffer,
-                                         final File cwd,
-                                         final String fileName,
-                                         final Collection<String> profiles) throws IOException {
+    public ES5Aggregater() {
+    }
 
+    @Override
+    public String getSpec() {
+        return JS_SPEC;
+    }
+
+    /**
+     *
+     * @param buffer String buffer allow to append.
+     * @param cwd The current working directory.
+     * @param fileName
+     * @param profiles
+     * @throws IOException
+     */
+    @Override
+    public void aggregateFromFile(final StringBuffer buffer,
+                                  final File cwd,
+                                  final String fileName,
+                                  final Collection<String> profiles) throws IOException {
+
+        // given the index.js file location
         final File f = resolveFile(cwd, fileName);
+
+        // we will need to scan the whole directory instead just the file
         final File nCwd = f.getParentFile();
+
         final String baseContents = ResourceUtil.loadContentFromResource(fileName);
 
         final BufferedReader reader = new BufferedReader(new StringReader(baseContents));
