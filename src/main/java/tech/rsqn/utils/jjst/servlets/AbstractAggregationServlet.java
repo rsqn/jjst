@@ -6,6 +6,7 @@ import tech.rsqn.utils.jjst.service.AbstractContentService;
 import tech.rsqn.utils.jjst.service.JavascriptES5ContentService;
 import tech.rsqn.utils.jjst.service.Profiles;
 import tech.rsqn.utils.jjst.util.ContentCache;
+import tech.rsqn.utils.jjst.util.ResourceUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -40,7 +41,7 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
     @Override
     protected String getContent(HttpServletRequest request) throws IOException {
         // current class runner direct, because for servlet the root path is under webapp directory
-        final File cwd = new File(getServletContext().getRealPath("/"));
+        final File cwd = new File(ResourceUtil.getResourcePath());
         final String contentPath = request.getRequestURI();
 
         final String profileArgs = request.getParameter("profiles");

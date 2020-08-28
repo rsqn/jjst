@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collection;
-import java.util.List;
 
 import static tech.rsqn.utils.jjst.util.FileUtil.resolveFile;
 
@@ -45,23 +44,19 @@ public class ES5Aggregater implements Aggregater {
      *
      * @param buffer String buffer allow to append.
      * @param cwd The current working directory.
-     * @param fileName
+     * @param jsFilePath
      * @param profiles
      * @throws IOException
      */
     @Override
     public void aggregateFromFile(final StringBuffer buffer,
                                   final File cwd,
-                                  final String fileName,
+                                  final String jsFilePath,
                                   final Collection<String> profiles) throws IOException {
 
-        // given the index.js file location
-        final File f = resolveFile(cwd, fileName);
-
-        // we will need to scan the whole directory instead just the file
-        final File nCwd = f.getParentFile();
-
-        final String baseContents = ResourceUtil.loadContentFromResource(fileName);
+        // given absolute path of the javascript from file system.
+        final File f = resolveFile(cwd, jsFilePath);
+        final String baseContents = ResourceUtil.loadContentFromFileSystem(f);
 
         final BufferedReader reader = new BufferedReader(new StringReader(baseContents));
 
@@ -86,7 +81,7 @@ public class ES5Aggregater implements Aggregater {
                 buffer.append("\n\n\n");
                 buffer.append("/* " + includeFileName + " */");
                 buffer.append("\n\n");
-                aggregateFromFile(buffer, nCwd, includeFileName, profiles);
+                aggregateFromFile(buffer, cwd, includeFileName, profiles);
             }
 //            else if (line.trim().containsKey("#template")) {
 //                String templateInclude = parseTemplateToken(line);
