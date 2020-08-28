@@ -13,12 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import static tech.rsqn.utils.jjst.service.Profiles.CLEAR_CACHE;
+import static tech.rsqn.utils.jjst.service.Profiles.NO_CACHE;
+
 public abstract class AbstractAggregationServlet extends AbstractContentServlet {
-
-    public static final String CLEAR_CACHE = "clearcache";
-    public static final String NO_CACHE = "nocache";
-    public static final String NO_COMPILE = "nocompile";
-
 
     private static Logger log = LoggerFactory.getLogger(AbstractAggregationServlet.class);
     private static final ContentCache<String, String> cache = new ContentCache<>();
