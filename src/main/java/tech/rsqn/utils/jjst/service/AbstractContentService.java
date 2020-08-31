@@ -9,6 +9,7 @@ import tech.rsqn.utils.jjst.util.ContentCache;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import static tech.rsqn.utils.jjst.service.Profiles.*;
@@ -26,6 +27,14 @@ public abstract class AbstractContentService {
     public AbstractContentService(final Profiles baseProfile) {
         Objects.requireNonNull(baseProfile, "Parameter baseProfile is required.");
         this.baseProfile = baseProfile;
+    }
+
+    /**
+     * Method to return currently cached keys.
+     * @return List of keys.
+     */
+    public List<String> cachedKeys() {
+        return cache.cachedKeys();
     }
 
     /**

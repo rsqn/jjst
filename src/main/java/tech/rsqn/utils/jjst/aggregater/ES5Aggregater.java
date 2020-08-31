@@ -13,6 +13,13 @@ import java.util.Collection;
 import static tech.rsqn.utils.jjst.util.FileUtil.resolveFile;
 
 /**
+ *
+ * <h2>Improvement list:</h2>
+ * <p>
+ *     <ul>
+ *         <li>TODO confirm if duplicated input should be ignored or not!</li>
+ *     </ul>
+ * </p>
  */
 public class ES5Aggregater implements Aggregater {
 

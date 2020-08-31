@@ -51,10 +51,24 @@ public class ProfilesTest {
         assertThat(noaddition.contains(CLEAR_CACHE), equalTo(true));
     }
 
+    @Test
+    void shouldAllowCustomProfiles() {
+        final String debugProfile = "debug";
+
+        final String str = String.join(Profiles.DELIMITER, Arrays.asList(CLEAR_CACHE));
+        final Profiles base = new Profiles(str);
+        final Profiles addition = new Profiles(base, "debug");
+
+        assertThat(addition.contains(CLEAR_CACHE), equalTo(true));
+        assertThat(addition.contains(debugProfile), equalTo(true));
+    }
 
     @Test
     void shouldFailToConstruct() {
-        assertThrows(NullPointerException.class, () -> new Profiles(null));
+        assertThrows(NullPointerException.class, () -> new Profiles((String) null));
+        assertThrows(IllegalArgumentException.class, () -> new Profiles("abc"));
+
+        assertThrows(NullPointerException.class, () -> new Profiles((String[]) null));
         assertThrows(IllegalArgumentException.class, () -> new Profiles("abc"));
     }
 }

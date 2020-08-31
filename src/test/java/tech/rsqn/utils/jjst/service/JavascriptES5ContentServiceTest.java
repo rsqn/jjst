@@ -1,6 +1,9 @@
 package tech.rsqn.utils.jjst.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.rsqn.utils.jjst.util.ResourceUtil;
 
 import java.io.File;
@@ -8,17 +11,27 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Andy Chau on 28/8/20.
  */
 public class JavascriptES5ContentServiceTest {
 
+    private static Logger log = LoggerFactory.getLogger(JavascriptES5ContentServiceTest.class);
+
     private JavascriptES5ContentService service;
 
-    private File es5Root = Paths.get("/", "ES5").toFile();
+    private File es5Root = Paths.get( "ES5").toFile();
+
+    private File resourceRoot;
+    private String indexPath;
+
+    @BeforeEach
+    void before() throws IOException {
+        resourceRoot = Paths.get(ResourceUtil.getResourcePath(), es5Root.getPath()).toFile();
+        indexPath = Paths.get("/", "js", "index.js").toString();
+    }
 
     @Test
     void shouldConstructAllMethodPass() throws IOException  {
@@ -35,10 +48,38 @@ public class JavascriptES5ContentServiceTest {
 
 
         // test empty profile, except cached
-        final File resourceRoot = Paths.get(ResourceUtil.getResourcePath(), "ES5").toFile();
-        String indexPath = Paths.get("/", "js", "index.js").toString();
+        String c = service.getContent(resourceRoot, indexPath, null);
+        log.info("Content: {}", c);
 
-        // TODO confirm if duplicated input should be ignored or not!
-        assertThat(service.getContent(resourceRoot, indexPath, null), notNullValue());
+        assertThat(c, containsString("/* /js/utils/util.js */"));
+        assertThat(c, containsString("/* /js/controller/controller.js */"));
+        assertThat(c, not(containsString("DEBUG ME")));
+
+
+        c = service.getContent(resourceRoot, indexPath, "debug");
+        assertThat(c, containsString("DEBUG ME"));
     }
+
+    @Test
+    void shouldUseBaseProfileAndAbleToClearCache() throws IOException {
+        // Base profile will cache the contents
+        // request to clean the cache then should clean.
+        final Profiles noCompile = new Profiles(Profiles.NO_COMPILE);
+
+        service = new JavascriptES5ContentService(noCompile);
+
+        // to load the content into cache
+        service.getContent(resourceRoot, indexPath, null);
+        assertThat(service.cachedKeys().size(), greaterThan(0));
+
+        // to load the content to get no-cache version, cache should still the same
+        service.getContent(resourceRoot, indexPath, Profiles.NO_CACHE);
+        assertThat(service.cachedKeys().size(), greaterThan(0));
+
+        // to load the content into cache to clear cache, can't really test because it will be remove and add back
+        service.getContent(resourceRoot, indexPath, Profiles.CLEAR_CACHE);
+        assertThat(service.cachedKeys().size(), equalTo(1));
+
+    }
+
 }

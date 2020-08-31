@@ -1,6 +1,8 @@
 package tech.rsqn.utils.jjst.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -18,6 +20,10 @@ public class ContentCache<K, V> {
     private ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private Map<K, V> cache = new HashMap<>();
+
+    public List<K> cachedKeys() {
+        return new ArrayList<>(cache.keySet());
+    }
 
     public V get(final K key) {
         try {

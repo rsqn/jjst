@@ -46,9 +46,19 @@ public class Profiles {
             return;
         }
 
-        this.add(profiles);
+        this.add(profiles.trim().split(DELIMITER));
 
         log.info("Profiles has been registered {}", profileSet);
+    }
+
+    /**
+     * Constructor with array of profiles.
+     * @param profiles
+     */
+    public Profiles(String... profiles) {
+        Objects.requireNonNull(profiles, "Parameter profiles is required");
+
+        this.add(profiles);
     }
 
     /**
@@ -65,7 +75,7 @@ public class Profiles {
             return;
         }
 
-        this.add(additions);
+        this.add(additions.trim().split(DELIMITER));
     }
 
     public boolean contains(final String profile) {
@@ -89,14 +99,9 @@ public class Profiles {
         return profileSet.toString();
     }
 
-    private void add(final String profiles) {
+    private void add(final String[] profiles) {
 
-        Arrays.asList(profiles.split(DELIMITER)).forEach(s -> {
-
-            if (!SUPPORTED_PROFILES.contains(s)) {
-                throw new IllegalArgumentException(String.format("Unsupported profile %s is not allowed!", s));
-            }
-
+        Arrays.asList(profiles).forEach(s -> {
             if (!profileSet.contains(s)) {
                 profileSet.add(s);
             }
