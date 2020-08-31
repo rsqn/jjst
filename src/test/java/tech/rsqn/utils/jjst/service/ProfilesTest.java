@@ -66,9 +66,6 @@ public class ProfilesTest {
     @Test
     void shouldFailToConstruct() {
         assertThrows(NullPointerException.class, () -> new Profiles((String) null));
-        assertThrows(IllegalArgumentException.class, () -> new Profiles("abc"));
-
         assertThrows(NullPointerException.class, () -> new Profiles((String[]) null));
-        assertThrows(IllegalArgumentException.class, () -> new Profiles("abc"));
     }
 }
