@@ -54,7 +54,7 @@ mr.register('./js/user.js',
     }
 )
 
-let tools = mr.get('./js/tools.js');
+let doubleIt = mr.get('./js/tools.js');
 let User = mr.get('./js/user.js')
 
 let jb = new User('James', 'Bond');
@@ -65,4 +65,4 @@ console.log(jb.visiting());
 console.log(jb.doubleAge())
 
 
-console.log(tools.doubleIt(2));
+console.log(doubleIt.doubleIt(2));
