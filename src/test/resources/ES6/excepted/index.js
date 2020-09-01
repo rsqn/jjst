@@ -54,7 +54,7 @@ mr.register('./js/user.js',
     }
 )
 
-let doubleIt = mr.get('./js/tools.js');
+// If the export is a class than has to assign to variable in order to perform the new operation.
 let User = mr.get('./js/user.js')
 
 let jb = new User('James', 'Bond');
@@ -65,4 +65,5 @@ console.log(jb.visiting());
 console.log(jb.doubleAge())
 
 
-console.log(doubleIt.doubleIt(2));
+// If it is not a class export will return function directly
+console.log(mr.get('./js/tools.js').doubleIt(2));
