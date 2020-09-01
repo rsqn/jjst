@@ -25,6 +25,13 @@ mr.register('./tools.js', {
     }
 });
 
+mr.register('./js/tools.js', {
+    doubleIt(n) {
+        return n * 2;
+    }
+});
+
+
 mr.register('./js/user.js',
     class User {
         constructor(firstName, lastName) {
@@ -47,6 +54,7 @@ mr.register('./js/user.js',
     }
 )
 
+let tools = mr.get('./js/tools.js');
 let User = mr.get('./js/user.js')
 
 let jb = new User('James', 'Bond');
@@ -57,5 +65,4 @@ console.log(jb.visiting());
 console.log(jb.doubleAge())
 
 
-let tools = mr.get('./tools.js');
 console.log(tools.doubleIt(2));
