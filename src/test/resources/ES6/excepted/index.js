@@ -30,27 +30,24 @@ let ToolsJSFn = function() {
 
 let UserJSFn = function() {
 
-    let firstName, lastName;
-    let visits;
-
     return {
-        User: function(_firstName, _lastName) {
-            firstName = _firstName;
-            lastName = _lastName;
-            visits = 0;
+        User: function(firstName, lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.visits = 0;
 
             // return this object itself therefore,
             // when getting from registry get the instance directly
             return this;
         }, 
         fullName: function() {
-            return `${firstName} ${lastName}`;
+            return `${this.firstName} ${this.lastName}`;
         },
         doubleVisit: function () {
-            return mr.get('./tools.js').doubleIt(visits);
+            return mr.get('./tools.js').doubleIt(this.visits);
         },
         visiting: function() {
-            return visits += 1;
+            return this.visits += 1;
         }
     };
 }

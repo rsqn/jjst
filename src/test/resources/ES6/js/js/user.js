@@ -11,7 +11,7 @@ class User {
         return `${this.firstName} ${this.lastName}`;
     }
 
-    doubleAge() {
+    doubleVisit() {
         return doubleIt(this.visits);
     }
 
