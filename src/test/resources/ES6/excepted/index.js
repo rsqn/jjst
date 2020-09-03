@@ -13,9 +13,9 @@ class ModuleRegistry {
     }
 
     get(name) {
+        // return pre-executed function
         return (this.registryMap.get(name))();
     }
-
 }
 
 let mr = new ModuleRegistry();
@@ -38,6 +38,9 @@ let UserJSFn = function() {
             firstName = _firstName;
             lastName = _lastName;
             visits = 0;
+
+            // return this object itself therefore,
+            // when getting from registry get the instance directly
             return this;
         }, 
         fullName: function() {
@@ -67,11 +70,11 @@ console.log('====== user 1 ========');
 // Instead of calling new class, just get the UserFn use .User() to return an instance
 let user1 = mr.get('./js/user.js').User('James', 'Bond');
 
-console.log(`user1.firstName: ${user1.firstName}`);
-console.log(`user1.fullName: ${user1.fullName()}`);
-console.log(`user1.visiting: ${user1.visiting()}`);
-console.log(`user1.visiting: ${user1.visiting()}`);
-console.log(`user1.doubleVisit: ${user1.doubleVisit()}`);
+console.log(`user1.firstName: ${user1.firstName}`); // member should be protected by closure!
+console.log(`user1.fullName(): ${user1.fullName()}`);
+console.log(`user1.visiting(): ${user1.visiting()}`);
+console.log(`user1.visiting(): ${user1.visiting()}`);
+console.log(`user1.doubleVisit(): ${user1.doubleVisit()}`);
 
 console.log('');
 console.log('====== user 2 ========');
@@ -84,26 +87,26 @@ console.log('====== user 2 ========');
 */
 let user2 = mr.get('./js/user.js').User('Second', 'User');
 
-console.log(`user2.fullName: ${user2.fullName()}`);
-console.log(`user2.visiting: ${user2.visiting()}`);
-console.log(`user2.visiting: ${user2.visiting()}`);
-console.log(`user2.visiting: ${user2.visiting()}`);
-console.log(`user2.visiting: ${user2.visiting()}`);
-console.log(`user2.doubleVisit: ${user2.doubleVisit()}`);
+console.log(`user2.fullName(): ${user2.fullName()}`);
+console.log(`user2.visiting(): ${user2.visiting()}`);
+console.log(`user2.visiting(): ${user2.visiting()}`);
+console.log(`user2.visiting(): ${user2.visiting()}`);
+console.log(`user2.visiting(): ${user2.visiting()}`);
+console.log(`user2.doubleVisit(): ${user2.doubleVisit()}`);
 
 console.log('');
 console.log('====== reaccess ========');
 
 // user1
-console.log(`user1.fullName: ${user1.fullName()}`);
-console.log(`user1.doubleVisit: ${user1.doubleVisit()}`);
+console.log(`user1.fullName(): ${user1.fullName()}`);
+console.log(`user1.doubleVisit(): ${user1.doubleVisit()}`);
 
 // user2
-console.log(`user2.fullName: ${user2.fullName()}`);
-console.log(`user2.doubleVisit: ${user2.doubleVisit()}`);
+console.log(`user2.fullName(): ${user2.fullName()}`);
+console.log(`user2.doubleVisit(): ${user2.doubleVisit()}`);
 
 
 // If it is not a class export will return function directly
 console.log('');
 console.log('====== tools.js ========');
-console.log(`tools.doubleIt: ${mr.get('./js/tools.js').doubleIt(2)}`);
+console.log(`tools.doubleIt(): ${mr.get('./js/tools.js').doubleIt(2)}`);
