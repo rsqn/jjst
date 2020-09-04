@@ -57,5 +57,6 @@ console.log(`apiTools.getUrlParameter(): ${apiTools.requestType('https://localho
 console.log('');
 console.log('====== math.js as math all functions========');
 console.log(`math.addOne(): ${math.addOne(10)}`);
+console.log('math.addOne(): ' + math.addOne(10));
 console.log(`math.minusOne(): ${math.minusOne(10)}`);
 console.log(`math.timesOne(): ${math.timesOne(10)}`);
