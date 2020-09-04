@@ -1,8 +1,9 @@
 // File: index.js
 
-import {UrlTools} from './js/api/tools.js'
 import {doubleIt} from './js/tools.js'
 import {User} from './js/user.js'
+import {UrlTools} from './js/api/tools.js'
+import * as math from './js/api/math.js'
 
 // emulate the User class
 console.log('');
@@ -44,5 +45,13 @@ console.log('');
 console.log('====== tools.js ========');
 console.log(`tools.doubleIt(): ${doubleIt(2)}`);
 
+console.log('');
+console.log('====== tools.js as UrlTools class========');
 let urlTools = new UrlTools();
 console.log(`urlTools.getUrlParameter(): ${urlTools.getUrlParameter('https://localhost:8080/something')}`);
+
+console.log('');
+console.log('====== math.js as math all functions========');
+console.log(`math.addToOne(): ${math.addOne(10)}`);
+console.log(`math.addToOne(): ${math.minusOne(10)}`);
+console.log(`math.addToOne(): ${math.timesOne(10)}`);
