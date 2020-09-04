@@ -1,5 +1,5 @@
 /** tools.js file under different module*/
-export class UrlTools {
+export class ApiTools {
 
     getUrlParameter (url) {
         return "type=param";

@@ -26,7 +26,7 @@ let ToolsJSFn = function() {
             return n * 2;
         }
     }
-}
+};
 
 let UserJSFn = function() {
 
@@ -50,7 +50,35 @@ let UserJSFn = function() {
             return this.visits += 1;
         }
     };
-}
+};
+
+// TODO what if same js module name under different package????
+let ApiToolsJSFn = function() {
+
+    return {
+        getUrlParameter: function(url) {
+            return "type=param";
+        },
+        requestType: function(url) {
+            return "https";
+        }
+    };
+};
+
+
+let MathJSFn = function() {
+    return {
+        addOne: function(n) {
+            return n + 1;
+        },
+        minusOne: function(n) {
+            return n - 1;
+        },
+        timesOne: function(n) {
+            return n * 1;
+        }}
+};
+
 
 console.log('UserFn: ' + UserJSFn);
 console.log('ToolsFn: ' + ToolsJSFn);
@@ -60,6 +88,8 @@ console.log('====== Register exported functions ========');
 mr.register('./js/user.js', UserJSFn);
 mr.register('./tools.js', ToolsJSFn);
 mr.register('./js/tools.js', ToolsJSFn);
+mr.register('./js/api/tools.js', ApiToolsJSFn);
+mr.register('./js/math.js', MathJSFn);
 
 // emulate the User class
 console.log('');
@@ -103,7 +133,19 @@ console.log(`user2.fullName(): ${user2.fullName()}`);
 console.log(`user2.doubleVisit(): ${user2.doubleVisit()}`);
 
 
-// If it is not a class export will return function directly
 console.log('');
 console.log('====== tools.js ========');
 console.log(`tools.doubleIt(): ${mr.get('./js/tools.js').doubleIt(2)}`);
+
+console.log('');
+console.log('====== tools.js as ApiTools class========');
+let apiTools = mr.get('./js/api/tools.js');
+console.log(`apiTools.getUrlParameter(): ${apiTools.getUrlParameter('https://localhost:8080/something')}`);
+console.log(`apiTools.getUrlParameter(): ${apiTools.requestType('https://localhost:8080/something')}`);
+
+
+console.log('');
+console.log('====== math.js as math all functions========');
+console.log(`math.addOne(): ${mr.get('./js/math.js').addOne(10)}`);
+console.log(`math.minusOne(): ${mr.get('./js/math.js').minusOne(10)}`);
+console.log(`math.timesOne(): ${mr.get('./js/math.js').timesOne(10)}`);
