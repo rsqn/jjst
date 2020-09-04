@@ -147,5 +147,6 @@ console.log(`apiTools.getUrlParameter(): ${apiTools.requestType('https://localho
 console.log('');
 console.log('====== math.js as math all functions========');
 console.log(`math.addOne(): ${mr.get('./js/math.js').addOne(10)}`);
+console.log('math.addOne(): ' + mr.get('./js/math.js').addOne(10));
 console.log(`math.minusOne(): ${mr.get('./js/math.js').minusOne(10)}`);
 console.log(`math.timesOne(): ${mr.get('./js/math.js').timesOne(10)}`);
