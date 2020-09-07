@@ -1,4 +1,4 @@
-package tech.rsqn.utils.jjst.util;
+package tech.rsqn.utils.jjst.aggregater.es6;
 
 import java.util.Map;
 
@@ -38,5 +38,7 @@ public class ModuleImports {
         // considerations
 
     }
+
+
 
 }
