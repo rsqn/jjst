@@ -80,7 +80,6 @@ public class ExportDefinitionTest {
         });
     }
 
-    /** TODO need to handle comment */
     @Test
     void todoHandleComment() {
         List<String> contentLines = Arrays.asList(
@@ -94,7 +93,7 @@ public class ExportDefinitionTest {
         // comment should be ignored!!!!
         ExportDefinition ep = new ExportDefinition(contentLines);
         Map<String, ExportDefinition.Definition> map = ep.getExports();
-        assertThat("TODO need to aware of comments!", map.size(), equalTo(1));
+        assertThat(map.size(), equalTo(1));
 
     }
 }

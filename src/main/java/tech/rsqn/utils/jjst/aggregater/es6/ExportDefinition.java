@@ -65,7 +65,7 @@ public class ExportDefinition {
 
     private void parseLine(final String l, final int n) {
 
-        final Definition def = getDefinition(l, n);
+        final Definition def = getDefinition(l.trim(), n);
         if (def != null) {
             definitions.put(def.name, def);
         }
@@ -83,6 +83,11 @@ public class ExportDefinition {
     }
 
     private Definition getDefinition(final String l, final int n) {
+
+        if (l.startsWith("//") || l.startsWith("*")) {
+            // comment line will skip it.
+            return null;
+        }
 
         final List<String> defGrp = RegexHelper.match(P_DEFINITION, l);
 
