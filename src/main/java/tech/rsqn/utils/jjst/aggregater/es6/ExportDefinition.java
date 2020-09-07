@@ -15,9 +15,6 @@ import java.util.regex.Pattern;
  */
 public class ExportDefinition {
 
-    public static final String OPEN_BLOCK = "{";
-    public static final String CLOSE_BLOCK = "}";
-
     // Inline export support class and function, group 1 as type, group 2 as the name of class or function
     public static final String REGEX_DEFINITION = "^.*(class|function)\\s([\\w]*).*";
     public static final String REGEX_EXPORT_INLINE = "^.*(export)\\s";
