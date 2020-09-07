@@ -32,6 +32,7 @@ public class ExportDefinitionTest {
         map.forEach((k, v) -> {
             assertThat(k, equalTo("myFun"));
             assertThat(v.type, equalTo(ExportDefinition.Definition.Type.FUNCTION));
+            assertThat(v.line, equalTo(1));
         });
 
         contentLines = Arrays.asList(
@@ -52,7 +53,9 @@ public class ExportDefinitionTest {
         assertThat(map.size(), equalTo(2));
 
         assertThat(map.containsKey("myFun1"), equalTo(true));
+        assertThat(map.get("myFun1").line, equalTo(1));
         assertThat(map.containsKey("myFun2"), equalTo(true));
+        assertThat(map.get("myFun2").line, equalTo(5));
 
     }
 
@@ -75,5 +78,23 @@ public class ExportDefinitionTest {
             assertThat(k, equalTo("MyClass"));
             assertThat(v.type, equalTo(ExportDefinition.Definition.Type.CLASS));
         });
+    }
+
+    /** TODO need to handle comment */
+    @Test
+    void todoHandleComment() {
+        List<String> contentLines = Arrays.asList(
+                "// Will export this function as myFunction"
+                , "export function myFunction"
+                , "{"
+                , "something..."
+                , "};"
+        );
+
+        // comment should be ignored!!!!
+        ExportDefinition ep = new ExportDefinition(contentLines);
+        Map<String, ExportDefinition.Definition> map = ep.getExports();
+        assertThat("TODO need to aware of comments!", map.size(), equalTo(1));
+
     }
 }

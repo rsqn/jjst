@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 /**
@@ -23,7 +24,7 @@ public class ExportDefinition {
 
     // Inline export support class and function, group 1 as type, group 2 as the name of class or function
     public static final String REGEX_DEFINITION = "^.*(class|function)\\s([\\w]*).*";
-    public static final String REGEX_EXPORT_INLINE = "^.*(export)\\s";
+    public static final String REGEX_EXPORT_INLINE = ".*(export)\\s";
 
     public final static Pattern P_DEFINITION = Pattern.compile(REGEX_DEFINITION);
     public final static Pattern P_EXPORT_INLINE = Pattern.compile(REGEX_EXPORT_INLINE);
@@ -44,6 +45,7 @@ public class ExportDefinition {
 
         Type type;
         String name;
+        int line;
     }
 
     /**
@@ -52,17 +54,18 @@ public class ExportDefinition {
      */
     public ExportDefinition(final List<String> lines) {
         Objects.requireNonNull(lines, "lines is null");
+        final AtomicInteger line = new AtomicInteger(1);
 
-        lines.forEach(l -> this.parseLine(l));
+        lines.forEach(l -> this.parseLine(l, line.getAndAdd(1)));
     }
 
     public Map<String, Definition> getExports() {
         return exports;
     }
 
-    private void parseLine(final String l) {
+    private void parseLine(final String l, final int n) {
 
-        final Definition def = getDefinition(l);
+        final Definition def = getDefinition(l, n);
         if (def != null) {
             definitions.put(def.name, def);
         }
@@ -71,17 +74,22 @@ public class ExportDefinition {
         final List<String> expGrp = RegexHelper.match(P_EXPORT_INLINE, l);
         if (expGrp.size() == 1) {
             // export detected
-            exports.put(def.name, def);
+            if (def != null) {
+                exports.put(def.name, def);
+            } else {
+                // TODO support for export {}
+            }
         }
     }
 
-    private Definition getDefinition(final String l) {
+    private Definition getDefinition(final String l, final int n) {
 
         final List<String> defGrp = RegexHelper.match(P_DEFINITION, l);
 
         if (defGrp.size() == 2) {
             Definition def = new Definition();
             def.name = defGrp.get(1);
+            def.line = n;
             if (Definition.Type.FUNCTION.toString().equals(defGrp.get(0).toUpperCase())) {
                 def.type = Definition.Type.FUNCTION;
             } else if (Definition.Type.CLASS.toString().equals(defGrp.get(0).toUpperCase())) {

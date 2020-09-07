@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Scanner scans from root js and store all the module JS file into memory.
@@ -24,7 +22,31 @@ public class ModuleScanner {
     /**
      * Map holds module file as key, file content stored as value.
      */
-    private Map<String, String> map;
+    private Map<String, Module> map;
+
+    static class Module {
+        String name;
+        List<String> lines;
+        ExportDefinition definitions;
+
+        public Module(String name, List<String> lines, ExportDefinition definitions) {
+            this.name = name;
+            this.lines = lines;
+            this.definitions = definitions;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<String> getLines() {
+            return lines;
+        }
+
+        public ExportDefinition getDefinitions() {
+            return definitions;
+        }
+    }
 
     /**
      * The path to the index file.
@@ -71,29 +93,38 @@ public class ModuleScanner {
         return indexFile;
     }
 
-    public Map<String, String> getMap() {
+    public Map<String, Module> getMap() {
         return map;
     }
 
     /**
      * To command a scan, if file content changed or new file added will update the map, removed file will
      * still remain in the map.
+     *
      * @return
      * @throws IOException
      */
-    public Map<String, String> scan() throws IOException {
+    public Map<String, Module> scan() throws IOException {
 
         // walk through from the root
         FileUtil.scanDirectory(rootPath, "js", "jsx")
                 .forEach((p -> {
                     try {
-                        map.put(rootPath.relativize(p).toString(), FileUtil.readFileContent(p));
+                        this.readFromPath(p);
                     } catch (IOException ioe) {
                         throw new RuntimeException(ioe);
                     }
                 }));
-
         return map;
+    }
+
+    private void readFromPath(final Path p) throws IOException {
+        final String content = FileUtil.readFileContent(p);
+        final String name = rootPath.relativize(p).toString();
+        final List<String> lines = Arrays.asList(content.split(System.lineSeparator()));
+        final ExportDefinition definition = new ExportDefinition(lines);
+
+        map.put(name, new Module(name, lines, definition));
     }
 
     /**

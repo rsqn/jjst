@@ -46,14 +46,26 @@ public class ModuleScannerTest {
     void shouldLoadModules() throws IOException {
         final ModuleScanner mr = new ModuleScanner(fullIndexPath.toString());
 
-        final Map<String, String> rst = mr.scan();
+        final Map<String, ModuleScanner.Module> rst = mr.scan();
 
-        assertThat(rst.get("index.js").length(), greaterThan(1));
-        assertThat(rst.get("js/tools.js").length(), greaterThan(1));
-        assertThat(rst.get("js/user.js").length(), greaterThan(1));
-        assertThat(rst.get("js/api/tools.js").length(), greaterThan(1));
+        assertThat(rst.get("index.js").getLines().size(), greaterThan(1));
+        // There is comment line which will be trigger
+        //assertThat(rst.get("index.js").getDefinitions().getExports().size(), equalTo(0));
+
+        assertThat(rst.get("js/tools.js").getLines().size(), greaterThan(1));
+        assertThat(rst.get("js/tools.js").getDefinitions().getExports().size(), greaterThan(0));
+
+        assertThat(rst.get("js/api/tools.js").getLines().size(), greaterThan(1));
+        assertThat(rst.get("js/api/tools.js").getDefinitions().getExports().size(), greaterThan(0));
+
+        assertThat(rst.get("js/user.js").getLines().size(), greaterThan(1));
 
         assertThat(mr.getMap(), equalTo(rst));
+
+        // TODO
+        assertThat("TODO: add export {} support!",
+                rst.get("js/user.js").getDefinitions().getExports().size(), greaterThan(0));
+
     }
 
 }
