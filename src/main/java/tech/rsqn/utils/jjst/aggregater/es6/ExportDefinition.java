@@ -15,6 +15,12 @@ import java.util.regex.Pattern;
  */
 public class ExportDefinition {
 
+
+    //
+    // TODO: Add support to export {} with name assignment.
+    // TODO: Add support export variable names
+    //
+
     // Inline export support class and function, group 1 as type, group 2 as the name of class or function
     public static final String REGEX_DEFINITION = "^.*(class|function)\\s([\\w]*).*";
     public static final String REGEX_EXPORT_INLINE = "^.*(export)\\s";
