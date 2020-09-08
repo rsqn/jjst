@@ -40,7 +40,7 @@ public class ExportDefinitionTest {
                 , "{"
                 , "something..."
                 , "};"
-                , "export function myFun2()"
+                , "export function myFun2(p1, p2)"
                 , "{"
                 , "something..."
                 , "};"
@@ -54,8 +54,10 @@ public class ExportDefinitionTest {
 
         assertThat(map.containsKey("myFun1"), equalTo(true));
         assertThat(map.get("myFun1").line, equalTo(1));
+        assertThat(map.get("myFun1").params, equalTo("()"));
         assertThat(map.containsKey("myFun2"), equalTo(true));
         assertThat(map.get("myFun2").line, equalTo(5));
+        assertThat(map.get("myFun2").params, equalTo("(p1, p2)"));
 
     }
 
@@ -84,7 +86,7 @@ public class ExportDefinitionTest {
     void todoHandleComment() {
         List<String> contentLines = Arrays.asList(
                 "// Will export this function as myFunction"
-                , "export function myFunction"
+                , "export function myFunction()"
                 , "{"
                 , "something..."
                 , "};"

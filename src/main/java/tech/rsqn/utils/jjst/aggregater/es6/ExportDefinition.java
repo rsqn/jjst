@@ -23,10 +23,12 @@ public class ExportDefinition {
     //
 
     // Inline export support class and function, group 1 as type, group 2 as the name of class or function
-    public static final String REGEX_DEFINITION = "^.*(class|function)\\s([\\w]*).*";
+    public static final String REGEX_FUNCTION_DEFINITION = "^.*(function)\\s([\\w]*).*(\\(.*\\))";
+    public static final String REGEX_CLASS_DEFINITION = "^.*(class)\\s([\\w]*).*";
     public static final String REGEX_EXPORT_INLINE = ".*(export)\\s";
 
-    public final static Pattern P_DEFINITION = Pattern.compile(REGEX_DEFINITION);
+    public final static Pattern P_FUNCTION_DEFINITION = Pattern.compile(REGEX_FUNCTION_DEFINITION);
+    public final static Pattern P_CLASS_DEFINITION = Pattern.compile(REGEX_CLASS_DEFINITION);
     public final static Pattern P_EXPORT_INLINE = Pattern.compile(REGEX_EXPORT_INLINE);
 
     /** Any function, class which exported*/
@@ -45,6 +47,7 @@ public class ExportDefinition {
 
         Type type;
         String name;
+        String params;
         int line;
     }
 
@@ -89,23 +92,41 @@ public class ExportDefinition {
             return null;
         }
 
-        final List<String> defGrp = RegexHelper.match(P_DEFINITION, l);
+        // try function first
+        final List<String> funDefGrp = RegexHelper.match(P_FUNCTION_DEFINITION, l);
 
-        if (defGrp.size() == 2) {
+        if (funDefGrp.size() == 3) {
             Definition def = new Definition();
-            def.name = defGrp.get(1);
+            def.name = funDefGrp.get(1);
+            def.params = funDefGrp.get(2);
             def.line = n;
-            if (Definition.Type.FUNCTION.toString().equals(defGrp.get(0).toUpperCase())) {
+
+            if (Definition.Type.FUNCTION.toString().equals(funDefGrp.get(0).toUpperCase())) {
                 def.type = Definition.Type.FUNCTION;
-            } else if (Definition.Type.CLASS.toString().equals(defGrp.get(0).toUpperCase())) {
+            } else {
+                final String err = String.format("Variable export is not supported - %s", def.name);
+                throw new UnsupportedOperationException(err);
+            }
+            return def;
+        }
+
+        // try class
+
+        final List<String> classDefGrp = RegexHelper.match(P_CLASS_DEFINITION, l);
+
+        if (classDefGrp.size() == 2) {
+            Definition def = new Definition();
+            def.name = classDefGrp.get(1);
+            def.line = n;
+            if (Definition.Type.CLASS.toString().equals(classDefGrp.get(0).toUpperCase())) {
                 def.type = Definition.Type.CLASS;
             } else {
                 final String err = String.format("Variable export is not supported - %s", def.name);
                 throw new UnsupportedOperationException(err);
             }
             return def;
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
