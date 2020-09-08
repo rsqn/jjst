@@ -12,10 +12,17 @@ import java.util.stream.Collectors;
 public class ResourceUtil {
     private static Logger log = LoggerFactory.getLogger(ResourceUtil.class);
 
-    public static final String getResourcePath() throws IOException {
-        final URL uri = ResourceUtil.class.getResource("/");
+    public static final String getResourceRoot() throws IOException {
+        return getResource("/");
+    }
 
-        return uri.getPath();
+    public static final String getResource(final String resourceFile) throws IOException {
+        final URL url = ResourceUtil.class.getResource(resourceFile);
+
+        if (url == null) {
+            throw new IOException(String.format("Resource: %s not found!", resourceFile));
+        }
+        return url.getPath();
     }
 
     /**

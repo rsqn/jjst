@@ -41,7 +41,7 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
     @Override
     protected String getContent(HttpServletRequest request) throws IOException {
         // current class runner direct, because for servlet the root path is under webapp directory
-        final File cwd = new File(ResourceUtil.getResourcePath());
+        final File cwd = new File(ResourceUtil.getResourceRoot());
         final String contentPath = request.getRequestURI();
 
         final String profileArgs = request.getParameter("profiles");

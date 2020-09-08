@@ -9,7 +9,7 @@ import java.util.Collection;
  */
 public interface Aggregater {
 
-    void aggregateFromFile(StringBuffer buffer, File cwd, String fileName, Collection<String> profiles)
+    void aggregateFromFile(StringBuffer buffer, File cwd, String jsFilePath, Collection<String> profiles)
             throws IOException;
 
 

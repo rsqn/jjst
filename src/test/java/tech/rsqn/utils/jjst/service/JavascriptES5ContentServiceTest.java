@@ -29,7 +29,7 @@ public class JavascriptES5ContentServiceTest {
 
     @BeforeEach
     void before() throws IOException {
-        resourceRoot = Paths.get(ResourceUtil.getResourcePath(), es5Root.getPath()).toFile();
+        resourceRoot = Paths.get(ResourceUtil.getResourceRoot(), es5Root.getPath()).toFile();
         indexPath = Paths.get("/", "js", "index.js").toString();
     }
 
