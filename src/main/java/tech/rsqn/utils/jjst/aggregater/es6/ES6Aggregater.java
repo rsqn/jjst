@@ -1,6 +1,7 @@
 package tech.rsqn.utils.jjst.aggregater.es6;
 
 import tech.rsqn.utils.jjst.aggregater.Aggregater;
+import tech.rsqn.utils.jjst.aggregater.es6.module.Module;
 import tech.rsqn.utils.jjst.util.FileUtil;
 import tech.rsqn.utils.jjst.util.ResourceUtil;
 
@@ -49,7 +50,7 @@ public class ES6Aggregater implements Aggregater {
     }
 
     private StringBuffer buildOutput(final StringBuffer buffer, final ModuleScanner scanner) throws IOException {
-        final Map<String, ModuleScanner.Module> scan = scanner.scan();
+        final Map<String, Module> scan = scanner.scan();
 
         this.addModuleRegistry(buffer);
 

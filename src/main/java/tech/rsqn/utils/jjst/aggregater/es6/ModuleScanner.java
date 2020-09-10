@@ -2,13 +2,16 @@ package tech.rsqn.utils.jjst.aggregater.es6;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.rsqn.utils.jjst.aggregater.es6.module.Module;
 import tech.rsqn.utils.jjst.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Scanner scans from root js and store all the module JS file into memory.
@@ -23,30 +26,6 @@ public class ModuleScanner {
      * Map holds module file as key, file content stored as value.
      */
     private Map<String, Module> map;
-
-    static class Module {
-        String name;
-        List<String> lines;
-        ExportDefinition definitions;
-
-        public Module(String name, List<String> lines, ExportDefinition definitions) {
-            this.name = name;
-            this.lines = lines;
-            this.definitions = definitions;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public List<String> getLines() {
-            return lines;
-        }
-
-        public ExportDefinition getDefinitions() {
-            return definitions;
-        }
-    }
 
     /**
      * The path to the index file.
@@ -121,10 +100,8 @@ public class ModuleScanner {
     private void readFromPath(final Path p) throws IOException {
         final String content = FileUtil.readFileContent(p);
         final String name = rootPath.relativize(p).toString();
-        final List<String> lines = Arrays.asList(content.split(System.lineSeparator()));
-        final ExportDefinition definition = new ExportDefinition(lines);
 
-        map.put(name, new Module(name, lines, definition));
+        map.put(name, new Module(name, content));
     }
 
     /**

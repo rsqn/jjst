@@ -1,4 +1,4 @@
-package tech.rsqn.utils.jjst.aggregater.es6;
+package tech.rsqn.utils.jjst.aggregater.es6.module;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ import java.util.Map;
  * Class to convert module imports with it assigned name and module file name.
  * @author Andy Chau on 4/9/20.
  */
-public class ModuleImports {
+public class Import {
     /**
      * Expression to get name and module location.
      * <p>
@@ -33,12 +33,6 @@ public class ModuleImports {
     public static final String REGEX_WILDCARD_IMPORT = "^import\\s\\*\\sas\\s(.*)\\sfrom\\s'(.*)'";
 
     private Map<String, String> importMap;
-
-    public ModuleImports(final String modulePath) {
-        // considerations
-
-    }
-
 
 
 }

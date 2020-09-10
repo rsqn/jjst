@@ -1,0 +1,9 @@
+let $module.name = function() {
+    return {
+        #foreach($fun in $module.jsFuncs)
+            $fun.name: function$fun.params {
+                $fun.body
+            }
+        #end
+    };
+}

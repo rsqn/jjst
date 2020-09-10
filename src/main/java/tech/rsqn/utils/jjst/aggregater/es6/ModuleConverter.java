@@ -1,8 +1,8 @@
 package tech.rsqn.utils.jjst.aggregater.es6;
 
-import java.util.Objects;
+import tech.rsqn.utils.jjst.aggregater.es6.module.Module;
 
-import static tech.rsqn.utils.jjst.aggregater.es6.ModuleScanner.Module;
+import java.util.Objects;
 
 /**
  * @author Andy Chau on 8/9/20.

@@ -1,6 +1,10 @@
 import {doubleIt} from './tools.js'
 
-class User {
+export class User {
+    constructor(firstName) {
+        this.firstName = firstName;
+    }
+
     constructor(firstName, lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,4 +23,6 @@ class User {
         return this.visits += 1;
     }
 }
-export {User};
+
+// TODO add support
+//export {User};

@@ -2,7 +2,7 @@ package tech.rsqn.utils.jjst.util;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import tech.rsqn.utils.jjst.aggregater.es6.ExportDefinition;
+import tech.rsqn.utils.jjst.aggregater.es6.module.ES6Regexs;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -17,7 +17,7 @@ public class RegexHelperTest {
 
     @Test
     void shouldMatchFunctionExportLines() {
-        final Pattern pFuncDef = ExportDefinition.P_FUNCTION_DEFINITION;
+        final Pattern pFuncDef = ES6Regexs.P_FUNCTION_DEFINITION;
 
         List<String> rst;
         // function
@@ -51,7 +51,7 @@ public class RegexHelperTest {
 
     @Test
     void shouldMatchClassExportLines() {
-        final Pattern pClassDef = ExportDefinition.P_CLASS_DEFINITION;
+        final Pattern pClassDef = ES6Regexs.P_CLASS_DEFINITION;
 
         List<String> rst;
         // class
