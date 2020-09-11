@@ -22,5 +22,32 @@ public interface ES6Regexs {
     String REGEX_CLASS_FUNCTION = "^[\\s]*?([\\w]*)[\\s]?(\\(.*\\)).*";
     Pattern P_CLASS_FUNCTION = Pattern.compile(REGEX_CLASS_FUNCTION);
 
+    /**
+     * Expression to get name and module location.
+     * <p>
+     *  Example: import {doubleIt} from './js/tools.js'.
+     *  Result: 'doubleIt', './js/tools.js'.
+     * </p>
+     *
+     * <p>
+     *  Example: import {addOne, minusOne} from './js/api/math.js'.
+     *  Results:
+     *      'addOne', './js/api/math.js'
+     *      'minusOne', './js/api/math.js'
+     * </p>
+     */
+    String REGEX_NAMED_IMPORT = "^import\\s\\{(.*)}\\sfrom\\s'(.*)'";
+    Pattern P_NAMED_IMPORT = Pattern.compile(REGEX_NAMED_IMPORT);
+
+    /**
+     * Expression to get wildcard name from an module.
+     * <p>
+     *  Example: import * as math from './js/api/math.js'
+     *  Result: 'math', './js/api/math.js'
+     * </p>
+     * TODO add support to wild card import
+     */
+    String REGEX_WILDCARD_IMPORT = "^import\\s\\*\\sas\\s(.*)\\sfrom\\s'(.*)'";
+    Pattern P_WILDCARD_IMPORT = Pattern.compile(REGEX_WILDCARD_IMPORT);
 
 }

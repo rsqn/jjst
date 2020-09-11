@@ -61,8 +61,8 @@ public class RegexHelperTest {
     void shouldMatchClassConstructor() {
         final Pattern p = ES6Regexs.P_CLASS_CONSTRUCTOR;
 
-        List<String> rst;
         // class
+        List<String> rst;
         rst = RegexHelper.match(p, " constructor() {");
         assertThat(rst.size(), equalTo(2));
         assertThat(rst.get(0), equalTo("constructor"));
@@ -78,8 +78,8 @@ public class RegexHelperTest {
     void shouldMatchInnerClassFunctions() {
         final Pattern p = ES6Regexs.P_CLASS_FUNCTION;
 
+        // functions
         List<String> rst;
-        // class
         rst = RegexHelper.match(p, "myFun1() {");
         assertThat(rst.size(), equalTo(2));
         assertThat(rst.get(0), equalTo("myFun1"));
@@ -95,5 +95,21 @@ public class RegexHelperTest {
 
         rst = RegexHelper.match(p, " function func (p1, p2) {");
         assertThat(rst.size(), equalTo(0));
+    }
+
+    @Test
+    void shouldMatchNamedImport() {
+        final Pattern p = ES6Regexs.P_NAMED_IMPORT;
+
+        List<String> rst;
+        rst = RegexHelper.match(p, "import {named} from './path/file.js'");
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("named"));
+        assertThat(rst.get(1), equalTo("./path/file.js"));
+
+        rst = RegexHelper.match(p, "import {name1, name2} from './path/file.js'");
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("name1, name2"));
+        assertThat(rst.get(1), equalTo("./path/file.js"));
     }
 }
