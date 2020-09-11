@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
+import static tech.rsqn.utils.jjst.aggregater.es6.module.ES6Regexs.*;
+
 /**
  * @author Andy Chau on 10/9/20.
  */
@@ -16,15 +18,6 @@ public class Module {
     public static final String BLOCK_OPEN = "{";
     public static final String BLOCK_CLOSE = "}";
     public static final String SEMICOLON = ";";
-
-    // Inline export support class and function, group 1 as type, group 2 as the name of class or function
-    public static final String REGEX_FUNCTION_DEFINITION = "^.*(function)\\s([\\w]*).*(\\(.*\\))";
-    public static final String REGEX_CLASS_DEFINITION = "^.*(class)\\s([\\w]*).*";
-    public static final String REGEX_EXPORT_INLINE = ".*(export)\\s";
-
-    public final static Pattern P_FUNCTION_DEFINITION = Pattern.compile(REGEX_FUNCTION_DEFINITION);
-    public final static Pattern P_CLASS_DEFINITION = Pattern.compile(REGEX_CLASS_DEFINITION);
-    public final static Pattern P_EXPORT_INLINE = Pattern.compile(REGEX_EXPORT_INLINE);
 
     private String name;
     private String fullContent;
@@ -73,9 +66,10 @@ public class Module {
         int blockDeep = 0;
 
         while (lineIdx.get() < lines.size()) {
+            // trim the line first remove spaces in beginning or end of line
             final String l = lines.get(lineIdx.getAndAdd(1)).trim();
 
-            if (l.length() == 0 || (l.startsWith("//") || l.startsWith("*"))) {
+            if (isEmptyOrComment(l)) {
                 // empty line or comment line will be skipped.
                 continue;
             }
@@ -101,8 +95,8 @@ public class Module {
                     continue;
                 }
 
-                final String noSpace = l.replaceAll("\\s+", "");
-                if (endWithCloseBlock(noSpace)) {
+                // handle close block
+                if (endWithCloseBlock(l)) {
                     blockDeep--;
                     if (blockDeep == 0) {
                         // body closed
@@ -114,7 +108,20 @@ public class Module {
                 }
 
                 if (curJsObj.getType().equals(BaseJsObject.Type.CLASS)) {
-                    // TODO handle class body which has nested function
+
+                    // pass current line idx and lines to the function it will handle the line process
+                    final int endLine = this.parseClassInnerLines(
+                            lines, lineIdx.get() - 1, blockOpened, ((JsClass) curJsObj));
+                    lineIdx.set(endLine);
+
+                    blockDeep--;
+                    if (blockDeep == 0) {
+                        // body closed
+                        captureBody = false;
+                        blockOpened = false;
+                        curJsObj = null;
+                    }
+                    continue;
 
                 } else if (curJsObj.getType().equals(BaseJsObject.Type.FUNCTION)) {
                     // need to capture function body
@@ -127,7 +134,7 @@ public class Module {
     private BaseJsObject parseLine(final String l, final int n) {
 
         // try function first
-        final JsFunction jsFunc = convertToJsFunction(l);
+        final JsFunction jsFunc = convertToFunction(l, P_FUNCTION_DEFINITION);
         if (jsFunc != null) {
             jsFuncs.add(jsFunc);
             return jsFunc;
@@ -143,31 +150,142 @@ public class Module {
         return null;
     }
 
-    private boolean endWithCloseBlock(final String noSpace) {
-        return (noSpace.endsWith(BLOCK_CLOSE) || noSpace.endsWith(BLOCK_CLOSE + SEMICOLON));
-    }
+    /**
+     * When parsing the class, it consume
+     *
+     * @param lines
+     * @param lineIdx
+     * @param blockOpened
+     * @param jsClass
+     */
+    private int parseClassInnerLines(final List<String> lines,
+                                     final int lineIdx,
+                                     final boolean blockOpened,
+                                     final JsClass jsClass) {
 
-    private void parseClassInnerLine(final List<String> lines, final AtomicInteger lineIdx, final JsClass jsClass) {
+        boolean captureBody = false;
+        boolean classBlockOpen = blockOpened;
+        boolean innerBlockOpen = false;
+        JsFunction workingFunc = null;
+        int blockDeep = blockOpened ? 1 : 0;
+        final AtomicInteger innerLineIdx = new AtomicInteger(lineIdx);
 
-    }
+        while (innerLineIdx.get() < lines.size()) {
+            // due to in main loop already incremented 1, we need to get the previous line to process.
+            final String l = lines.get(innerLineIdx.getAndAdd(1)).trim();
 
-    private JsFunction convertToJsFunction(final String l) {
+            if (isEmptyOrComment(l)) {
+                // empty line or comment line will be skipped.
+                continue;
+            }
 
-        final List<String> funDefGrp = RegexHelper.match(P_FUNCTION_DEFINITION, l);
-        if (funDefGrp.size() == 3) {
-            final String name = funDefGrp.get(1);
-            final String params = funDefGrp.get(2);
-            return new JsFunction(name, params);
+            if (!captureBody && !classBlockOpen && l.startsWith(BLOCK_OPEN)) {
+                // { is in a new line for class
+                classBlockOpen = true;
+                blockDeep++;
+                continue;
+            }
+
+            if (!captureBody && endWithCloseBlock(l)) {
+                blockDeep--;
+                if (blockDeep == 0) {
+                    classBlockOpen = false;
+                }
+                continue;
+            }
+
+            if (captureBody) {
+                // go through the body of current working function (constructor also is a function)
+                // this line is part of function or class function body
+                if (!innerBlockOpen && l.startsWith(BLOCK_OPEN)) {
+                    // { is in a new line
+                    innerBlockOpen = true;
+                    blockDeep++;
+                    continue;
+                }
+
+                // handle close block
+                if (endWithCloseBlock(l)) {
+                    blockDeep--;
+                    if (blockDeep == 1) {
+                        // body closed
+                        captureBody = false;
+                        innerBlockOpen = false;
+                        workingFunc = null;
+                    }
+                    continue;
+                }
+
+                // need to capture function body
+                workingFunc.addBodyLine(l);
+
+                continue;
+            }
+
+            // Class constructor
+            workingFunc = this.convertToFunction(l, P_CLASS_CONSTRUCTOR);
+            if (workingFunc != null) {
+                // constructor detected need to capture body
+                jsClass.setConstructor(workingFunc);
+                captureBody = true;
+
+                if (l.endsWith(BLOCK_OPEN)) {
+                    innerBlockOpen = true;
+                    blockDeep++;
+                }
+                continue;
+            }
+
+            // Class function
+            workingFunc = this.convertToFunction(l, P_CLASS_FUNCTION);
+            if (workingFunc != null) {
+                // class function detected need to capture its body
+                jsClass.addClassFunction(workingFunc);
+                captureBody = true;
+
+                if (l.endsWith(BLOCK_OPEN)) {
+                    innerBlockOpen = true;
+                    blockDeep++;
+                }
+                continue;
+            }
+
+            // Normal function outside of class
+            workingFunc = this.convertToFunction(l, P_FUNCTION_DEFINITION);
+            if (workingFunc != null) {
+                jsClass.addNoneClassFunction(workingFunc);
+                captureBody = true;
+
+                if (l.endsWith(BLOCK_OPEN)) {
+                    innerBlockOpen = true;
+                    blockDeep++;
+                }
+                continue;
+            }
+
+            // if none of above assuming the line is a member variable
+            jsClass.addClassMember(l);
         }
 
+        // when inner block not open means already closed.
+        return innerLineIdx.get();
+    }
+
+    private JsFunction convertToFunction(final String l, final Pattern pattern) {
+        final List<String> grps = RegexHelper.match(pattern, l);
+        if (grps.size() == 2) {
+            final String name = grps.get(0);
+            final String params = grps.get(1);
+            return new JsFunction(name, params);
+        }
         return null;
     }
 
     private JsClass convertToJsClass(final String l) {
         final List<String> classDefGrp = RegexHelper.match(P_CLASS_DEFINITION, l);
 
-        if (classDefGrp.size() == 2) {
-            final String name = classDefGrp.get(1);
+        if (classDefGrp.size() == 1) {
+            final String name = classDefGrp.get(0);
             return new JsClass(name);
         }
         return null;
@@ -181,5 +299,14 @@ public class Module {
             return true;
         }
         return false;
+    }
+
+    private boolean endWithCloseBlock(final String l) {
+        final String noSpace = l.replaceAll("\\s+", "");
+        return (noSpace.endsWith(BLOCK_CLOSE) || noSpace.endsWith(BLOCK_CLOSE + SEMICOLON));
+    }
+
+    private boolean isEmptyOrComment(final String l) {
+        return (l.length() == 0 || (l.startsWith("//") || l.startsWith("*")));
     }
 }

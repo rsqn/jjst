@@ -21,28 +21,24 @@ public class RegexHelperTest {
         List<String> rst;
         // function
         rst = RegexHelper.match(p, "export function myFun (p1,p2,p3) {");
-        assertThat(rst.size(), equalTo(3));
-        assertThat(rst.get(0), equalTo("function"));
-        assertThat(rst.get(1), equalTo("myFun"));
-        assertThat(rst.get(2), equalTo("(p1,p2,p3)"));
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("myFun"));
+        assertThat(rst.get(1), equalTo("(p1,p2,p3)"));
 
         rst = RegexHelper.match(p, "export function myFun(){");
-        assertThat(rst.size(), equalTo(3));
-        assertThat(rst.get(0), equalTo("function"));
-        assertThat(rst.get(1), equalTo("myFun"));
-        assertThat(rst.get(2), equalTo("()"));
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("myFun"));
+        assertThat(rst.get(1), equalTo("()"));
 
         rst = RegexHelper.match(p, "export function myFun()");
-        assertThat(rst.size(), equalTo(3));
-        assertThat(rst.get(0), equalTo("function"));
-        assertThat(rst.get(1), equalTo("myFun"));
-        assertThat(rst.get(2), equalTo("()"));
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("myFun"));
+        assertThat(rst.get(1), equalTo("()"));
 
         rst = RegexHelper.match(p, "function myFun()");
-        assertThat(rst.size(), equalTo(3));
-        assertThat(rst.get(0), equalTo("function"));
-        assertThat(rst.get(1), equalTo("myFun"));
-        assertThat(rst.get(2), equalTo("()"));
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("myFun"));
+        assertThat(rst.get(1), equalTo("()"));
     }
 
     @Test
@@ -51,15 +47,13 @@ public class RegexHelperTest {
 
         List<String> rst;
         // class
-        rst = RegexHelper.match(p, "export class MyFun {");
-        assertThat(rst.size(), equalTo(2));
-        assertThat(rst.get(0), equalTo("class"));
-        assertThat(rst.get(1), equalTo("MyFun"));
+        rst = RegexHelper.match(p, "export class MyClass {");
+        assertThat(rst.size(), equalTo(1));
+        assertThat(rst.get(0), equalTo("MyClass"));
 
-        rst = RegexHelper.match(p, "class MyFun {");
-        assertThat(rst.size(), equalTo(2));
-        assertThat(rst.get(0), equalTo("class"));
-        assertThat(rst.get(1), equalTo("MyFun"));
+        rst = RegexHelper.match(p, "class MyClass {");
+        assertThat(rst.size(), equalTo(1));
+        assertThat(rst.get(0), equalTo("MyClass"));
 
     }
 
@@ -69,14 +63,14 @@ public class RegexHelperTest {
 
         List<String> rst;
         // class
-        rst = RegexHelper.match(p, " constructor MyClass() {");
+        rst = RegexHelper.match(p, " constructor() {");
         assertThat(rst.size(), equalTo(2));
-        assertThat(rst.get(0), equalTo("MyClass"));
+        assertThat(rst.get(0), equalTo("constructor"));
         assertThat(rst.get(1), equalTo("()"));
 
-        rst = RegexHelper.match(p, " constructor MyClass (p1, p2) {");
+        rst = RegexHelper.match(p, " constructor (p1, p2) {");
         assertThat(rst.size(), equalTo(2));
-        assertThat(rst.get(0), equalTo("MyClass"));
+        assertThat(rst.get(0), equalTo("constructor"));
         assertThat(rst.get(1), equalTo("(p1, p2)"));
     }
 
