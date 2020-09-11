@@ -15,4 +15,12 @@ public interface ES6Regexs {
 
     String REGEX_EXPORT_INLINE = ".*(export)\\s";
     Pattern P_EXPORT_INLINE = Pattern.compile(REGEX_EXPORT_INLINE);
+
+    String REGEX_CLASS_CONSTRUCTOR = "^.*constructor\\s(.*)(\\(.*\\))";
+    Pattern P_CLASS_CONSTRUCTOR = Pattern.compile(REGEX_CLASS_CONSTRUCTOR);
+
+    String REGEX_CLASS_FUNCTION = "^[\\s]*?([\\w]*)[\\s]?(\\(.*\\)).*";
+    Pattern P_CLASS_FUNCTION = Pattern.compile(REGEX_CLASS_FUNCTION);
+
+
 }
