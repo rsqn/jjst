@@ -112,4 +112,16 @@ public class RegexHelperTest {
         assertThat(rst.get(0), equalTo("name1, name2"));
         assertThat(rst.get(1), equalTo("./path/file.js"));
     }
+
+    @Test
+    void shouldMatchWildcardImport() {
+        final Pattern p = ES6Regexs.P_WILDCARD_IMPORT;
+
+        List<String> rst;
+        rst = RegexHelper.match(p, "import * as wildcard from './path/file.js'");
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("wildcard"));
+        assertThat(rst.get(1), equalTo("./path/file.js"));
+
+    }
 }
