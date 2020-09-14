@@ -1,9 +1,11 @@
 package tech.rsqn.utils.jjst.aggregater.es6.module;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.rsqn.utils.jjst.util.RegexHelper;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +24,8 @@ public class Module {
     public static final String BLOCK_CLOSE = "}";
     public static final String SEMICOLON = ";";
 
+    /** The name of module will be assigned and will be used as aggregated function name*/
+    private String name;
     private String path;
     private String fullContent;
     private List<String> lines = new ArrayList<>();
@@ -32,7 +36,12 @@ public class Module {
     public Module(final String path, final String fullContent) {
         this.path = path;
         this.fullContent = fullContent;
+        this.name = FilenameUtils.removeExtension(Paths.get(path).toFile().getName()) + "JS_Fn";
         this.parseModule();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getPath() {
@@ -53,6 +62,16 @@ public class Module {
 
     public List<JsFunction> getJsFuncs() {
         return jsFuncs;
+    }
+
+    public List<JsFunction> getJoinedFuncs() {
+        final List<JsFunction> all = new ArrayList<>();
+        if (jsClass != null) {
+            all.addAll(jsClass.getAllFuncs());
+        }
+        all.addAll(jsFuncs);
+
+        return all;
     }
 
     public JsClass getJsClass() {

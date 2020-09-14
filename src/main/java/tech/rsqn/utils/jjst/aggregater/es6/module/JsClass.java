@@ -56,4 +56,17 @@ public class JsClass extends BaseJsObject {
         Objects.requireNonNull(jsFunction, "Parameter jsFunction is required");
         noneClassFunctions.add(jsFunction);
     }
+
+
+    /**
+     * Return a combined functions including
+     * @return
+     */
+    public List<JsFunction> getAllFuncs() {
+        final List<JsFunction> all = new ArrayList<>();
+        all.add(constructor);
+        all.addAll(classFunctions);
+        all.addAll(noneClassFunctions);
+        return all;
+    }
 }

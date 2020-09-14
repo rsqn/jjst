@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static tech.rsqn.utils.jjst.TestUtils.concatList;
 
 /**
  * @author Andy Chau on 10/9/20.
@@ -35,7 +35,11 @@ public class ModuleTest {
         final String fullContent = concatList(contentLines);
 
         final Module module = new Module("test.js", fullContent);
+        assertThat(module.getName(), equalTo("testJS_Fn"));
         assertThat(module.getPath(), equalTo("test.js"));
+
+        // All joined functions
+        assertThat(module.getJoinedFuncs().size(), equalTo(3));
 
         final List<JsFunction> jsFuncs = module.getJsFuncs();
         assertThat(jsFuncs.size(), equalTo(3));
@@ -87,13 +91,13 @@ public class ModuleTest {
                 , "function addDot(value) {"
                 , "    return value + '.';"
                 , "};"
-
         );
 
         final String fullContent = concatList(contentLines);
 
 
         final Module module = new Module("MyClass.js", fullContent);
+        assertThat(module.getName(), equalTo("MyClassJS_Fn"));
         assertThat(module.getPath(), equalTo("MyClass.js"));
 
         //
@@ -102,6 +106,9 @@ public class ModuleTest {
         assertThat(module.getImports(), notNullValue());
         assertThat(module.getImports().size(), equalTo(1));
         assertThat(module.getImports().get(0).getType(), equalTo(Import.Type.NAMED));
+
+        // All joined functions
+        assertThat(module.getJoinedFuncs().size(), equalTo(4));
 
         //
         // test class
@@ -159,9 +166,5 @@ public class ModuleTest {
         assertThat(members.get(1), equalTo("let p2;"));
 
         assertThat(module.getJsFuncs(), notNullValue());
-    }
-
-    private String concatList(List<String> list) {
-        return list.stream().collect(Collectors.joining(System.lineSeparator()));
     }
 }

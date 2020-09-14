@@ -29,9 +29,11 @@ let ToolsJSFn = function() {
 };
 
 let UserJSFn = function() {
+    let firstName;
+    let lastName;
 
     return {
-        User: function(firstName, lastName) {
+        constructor: function(firstName, lastName) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.visits = 0;
@@ -76,7 +78,8 @@ let MathJSFn = function() {
         },
         timesOne: function(n) {
             return n * 1;
-        }}
+        }
+    };
 };
 
 
@@ -95,7 +98,7 @@ mr.register('./js/math.js', MathJSFn);
 console.log('');
 console.log('====== user 1 ========');
 // Instead of calling new class, just get the UserFn use .User() to return an instance
-let user1 = mr.get('./js/user.js').User('James', 'Bond');
+let user1 = mr.get('./js/user.js').constructor('James', 'Bond');
 
 console.log(`user1.firstName: ${user1.firstName}`); // member should be protected by closure!
 console.log(`user1.fullName(): ${user1.fullName()}`);
@@ -112,7 +115,7 @@ console.log('====== user 2 ========');
     Replace with getting from registry and call the constructor simulator.
         let user2 = mr.get('./js/user.js').User('', '');
 */
-let user2 = mr.get('./js/user.js').User('Second', 'User');
+let user2 = mr.get('./js/user.js').constructor('Second', 'User');
 
 console.log(`user2.fullName(): ${user2.fullName()}`);
 console.log(`user2.visiting(): ${user2.visiting()}`);

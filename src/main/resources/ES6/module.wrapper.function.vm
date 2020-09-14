@@ -1,9 +1,14 @@
 let $module.name = function() {
+#foreach ($m in $module.jsClass.classMembers)
+    $m
+#end
     return {
-        #foreach($fun in $module.jsFuncs)
-            $fun.name: function$fun.params {
-                $fun.body
-            }
-        #end
+#foreach($func in $module.joinedFuncs)
+        $func.name: function$func.params {
+    #foreach($bodyLine in $func.bodyLines)
+            $bodyLine
+    #end
+        }#if ($foreach.hasNext),#end
+#end
     };
-}
+};
