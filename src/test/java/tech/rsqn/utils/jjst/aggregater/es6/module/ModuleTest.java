@@ -67,7 +67,9 @@ public class ModuleTest {
     @Test
     void shouldProcessClassModule() {
         final List<String> contentLines = Arrays.asList(
-                "export class MyClass {"
+                "import {MyImport} from './js/import.js'; "
+                , ""
+                ,"export class MyClass {"
                 , "    let p1;"
                 , "    let p2;"
                 , ""
@@ -90,19 +92,37 @@ public class ModuleTest {
 
         final String fullContent = concatList(contentLines);
 
+
         final Module module = new Module("MyClass", fullContent);
         assertThat(module.getName(), equalTo("MyClass"));
 
+        //
+        // test import has been registered
+        //
+        assertThat(module.getImports(), notNullValue());
+        assertThat(module.getImports().size(), equalTo(1));
+        assertThat(module.getImports().get(0).getType(), equalTo(Import.Type.NAMED));
+
+        //
+        // test class
+        //
         final JsClass jsClass = module.getJsClass();
         assertThat(jsClass, notNullValue());
         assertThat(jsClass.getType(), equalTo(BaseJsObject.Type.CLASS));
 
+        //
+        // test class constructor
+        //
         JsFunction jsFunc;
-
         jsFunc = jsClass.getConstructor();
         assertThat(jsFunc.getName(), equalTo("constructor"));
         assertThat(jsFunc.getParams(), equalTo("(p1, p2)"));
         assertThat(jsFunc.getBodyLines().size(), equalTo(2));
+
+        //
+        // test import
+        //
+        assertThat(jsClass.getClassFunctions().size(), equalTo(2));
 
         //
         // test class functions

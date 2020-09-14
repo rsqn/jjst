@@ -1,5 +1,7 @@
 package tech.rsqn.utils.jjst.aggregater.es6.module;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.rsqn.utils.jjst.util.RegexHelper;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import static tech.rsqn.utils.jjst.aggregater.es6.module.ES6Regexs.*;
  * @author Andy Chau on 10/9/20.
  */
 public class Module {
+    private static Logger log = LoggerFactory.getLogger(Module.class);
 
     public static final String BLOCK_OPEN = "{";
     public static final String BLOCK_CLOSE = "}";
@@ -75,6 +78,15 @@ public class Module {
             }
 
             if (!captureBody) {
+
+                if (!blockOpened) {
+                    // assuming when not capturing body and block is not opened it will be import statement
+                    final Import im = Import.parseLine(l);
+                    if (im != null) {
+                        imports.add(im);
+                    }
+                }
+
                 curJsObj = this.parseLine(l, lineIdx.get());
 
                 if (curJsObj != null) {
