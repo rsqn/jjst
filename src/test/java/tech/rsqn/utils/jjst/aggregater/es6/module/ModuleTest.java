@@ -34,8 +34,8 @@ public class ModuleTest {
 
         final String fullContent = concatList(contentLines);
 
-        final Module module = new Module("Test2", fullContent);
-        assertThat(module.getName(), equalTo("Test2"));
+        final Module module = new Module("test.js", fullContent);
+        assertThat(module.getPath(), equalTo("test.js"));
 
         final List<JsFunction> jsFuncs = module.getJsFuncs();
         assertThat(jsFuncs.size(), equalTo(3));
@@ -93,8 +93,8 @@ public class ModuleTest {
         final String fullContent = concatList(contentLines);
 
 
-        final Module module = new Module("MyClass", fullContent);
-        assertThat(module.getName(), equalTo("MyClass"));
+        final Module module = new Module("MyClass.js", fullContent);
+        assertThat(module.getPath(), equalTo("MyClass.js"));
 
         //
         // test import has been registered
