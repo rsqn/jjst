@@ -22,21 +22,21 @@ public class Module {
     public static final String BLOCK_CLOSE = "}";
     public static final String SEMICOLON = ";";
 
-    private String name;
+    private String path;
     private String fullContent;
     private List<String> lines = new ArrayList<>();
     private List<Import> imports = new ArrayList<>();
     private List<JsFunction> jsFuncs = new ArrayList<>();
     private JsClass jsClass;
 
-    public Module(final String name, final String fullContent) {
-        this.name = name;
+    public Module(final String path, final String fullContent) {
+        this.path = path;
         this.fullContent = fullContent;
         this.parseModule();
     }
 
-    public String getName() {
-        return name;
+    public String getPath() {
+        return path;
     }
 
     public String getFullContent() {
@@ -79,12 +79,11 @@ public class Module {
 
             if (!captureBody) {
 
-                if (!blockOpened) {
-                    // assuming when not capturing body and block is not opened it will be import statement
-                    final Import im = Import.parseLine(l);
-                    if (im != null) {
-                        imports.add(im);
-                    }
+                // assuming when not capturing body and block is not opened it will be import statement
+                final Import im = Import.parseLine(l);
+                if (im != null) {
+                    imports.add(im);
+                    continue;
                 }
 
                 curJsObj = this.parseLine(l, lineIdx.get());
