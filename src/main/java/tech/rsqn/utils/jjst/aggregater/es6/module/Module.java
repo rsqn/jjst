@@ -288,6 +288,8 @@ public class Module {
         if (grps.size() == 2) {
             final String name = grps.get(0);
             final String params = grps.get(1);
+
+            log.debug("Detected function - name: {}, params: {}", name, params);
             return new JsFunction(name, params);
         }
         return null;
@@ -298,6 +300,8 @@ public class Module {
 
         if (classDefGrp.size() == 1) {
             final String name = classDefGrp.get(0);
+
+            log.debug("Detected class - name: {}", name);
             return new JsClass(name);
         }
         return null;
