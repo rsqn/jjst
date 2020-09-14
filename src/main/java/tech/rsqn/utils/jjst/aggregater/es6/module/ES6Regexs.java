@@ -37,7 +37,7 @@ public interface ES6Regexs {
      * </p>
      */
     String REGEX_NAMED_IMPORT = "^import\\s\\{(.*)}\\sfrom\\s'(.*)'";
-    Pattern P_NAMED_IMPORT = Pattern.compile(REGEX_NAMED_IMPORT);
+    Pattern P_IMPORT_NAMED = Pattern.compile(REGEX_NAMED_IMPORT);
 
     /**
      * Expression to get wildcard name from an module.
@@ -48,6 +48,6 @@ public interface ES6Regexs {
      * TODO add support to wild card import
      */
     String REGEX_WILDCARD_IMPORT = "^import\\s\\*\\sas\\s(.*)\\sfrom\\s'(.*)'";
-    Pattern P_WILDCARD_IMPORT = Pattern.compile(REGEX_WILDCARD_IMPORT);
+    Pattern P_IMPORT_WILDCARD = Pattern.compile(REGEX_WILDCARD_IMPORT);
 
 }

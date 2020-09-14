@@ -99,7 +99,7 @@ public class RegexHelperTest {
 
     @Test
     void shouldMatchNamedImport() {
-        final Pattern p = ES6Regexs.P_NAMED_IMPORT;
+        final Pattern p = ES6Regexs.P_IMPORT_NAMED;
 
         List<String> rst;
         rst = RegexHelper.match(p, "import {named} from './path/file.js'");
@@ -115,13 +115,12 @@ public class RegexHelperTest {
 
     @Test
     void shouldMatchWildcardImport() {
-        final Pattern p = ES6Regexs.P_WILDCARD_IMPORT;
+        final Pattern p = ES6Regexs.P_IMPORT_WILDCARD;
 
         List<String> rst;
         rst = RegexHelper.match(p, "import * as wildcard from './path/file.js'");
         assertThat(rst.size(), equalTo(2));
         assertThat(rst.get(0), equalTo("wildcard"));
         assertThat(rst.get(1), equalTo("./path/file.js"));
-
     }
 }
