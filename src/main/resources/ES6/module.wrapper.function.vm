@@ -12,3 +12,4 @@ let $module.name = function() {
 #end
     };
 };
+mr.register($module.path, $module.name);
