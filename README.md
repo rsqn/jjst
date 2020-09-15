@@ -45,7 +45,7 @@ How do I use this?
 
 ### Add these servlets to your web xml.
 ```
- <servlet>
+    <servlet>
         <servlet-name>jjs</servlet-name>
         <servlet-class>tech.rsqn.utils.jjst.servlets.JavascriptAggregationServlet</servlet-class>
         <async-supported>false</async-supported>
@@ -55,7 +55,7 @@ How do I use this?
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>jsAggregation</servlet-name>
+        <servlet-name>jjs</servlet-name>
         <url-pattern>/js/*</url-pattern>
     </servlet-mapping>
 
@@ -92,8 +92,8 @@ How do I?
 ```
 index.js ->
 
-#include libs/mylib.js
-#include apps/myapp.js
+import {mylib} from 'libs/mylib.js'
+import {myapp} from 'apps/myapp.js'
 ```
 
 #### Use profiles ?
@@ -118,5 +118,12 @@ index.js ->
     var myConstant ='${SOME_ENV_VAR}';
     console.log('myVar is ' + myConstant );
 ```
+
+#### Try the sample?
+```
+mvn tomcat7:run
+```
+
+Visit http://localhost:8080/ or http://localhost:8080/helloworld.html
 
 
