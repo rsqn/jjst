@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.rsqn.utils.jjst.aggregater.ES6Aggregater;
+import tech.rsqn.utils.jjst.aggregater.JsCompileAggregater;
 import tech.rsqn.utils.jjst.util.ResourceUtil;
 
 import java.io.IOException;
@@ -17,9 +17,9 @@ import static org.hamcrest.Matchers.containsString;
 /**
  * @author Andy Chau on 8/9/20.
  */
-public class ES6AggregaterTest {
+public class JsCompileAggregaterTest {
 
-    private static Logger log = LoggerFactory.getLogger(ES6AggregaterTest.class);
+    private static Logger log = LoggerFactory.getLogger(JsCompileAggregaterTest.class);
 
     Path es6Root;
     Path indexPath;
@@ -33,7 +33,7 @@ public class ES6AggregaterTest {
     }
     @Test
     void shouldPass() throws IOException {
-        ES6Aggregater es6 = new ES6Aggregater();
+        JsCompileAggregater es6 = new JsCompileAggregater();
 
         final StringBuffer buf = new StringBuffer();
 

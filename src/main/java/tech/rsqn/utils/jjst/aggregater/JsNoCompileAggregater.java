@@ -2,6 +2,7 @@ package tech.rsqn.utils.jjst.aggregater;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.rsqn.utils.jjst.aggregater.es6.module.Import;
 import tech.rsqn.utils.jjst.util.ResourceUtil;
 
 import java.io.BufferedReader;
@@ -21,13 +22,13 @@ import static tech.rsqn.utils.jjst.util.FileUtil.resolveFile;
  *     </ul>
  * </p>
  */
-public class ES5Aggregater implements Aggregater {
+public class JsNoCompileAggregater implements Aggregater {
 
-    private static Logger log = LoggerFactory.getLogger(ES5Aggregater.class);
+    private static Logger log = LoggerFactory.getLogger(JsNoCompileAggregater.class);
 
     static final String JS_SPEC = "ES5";
 
-    static final String INCLUDE_TOKEN = "#include";
+    static final String IMPORT_TOKEN = "import";
     static final String IF_PROFILE_TOKEN = "#ifprofile";
     static final String IF_NOT_PROFILE_TOKEN = "#ifnot_profile";
     static final String END_IF_TOKEN = "#endif";
@@ -39,7 +40,7 @@ public class ES5Aggregater implements Aggregater {
     static final int IN_PROFILE_STATE_IGNORE = 1;
     static final int IN_PROFILE_STATE_PROCESS = 2;
 
-    public ES5Aggregater() {
+    public JsNoCompileAggregater() {
     }
 
     @Override
@@ -83,8 +84,8 @@ public class ES5Aggregater implements Aggregater {
                 continue;
             }
 
-            if (line.trim().startsWith(INCLUDE_TOKEN)) {
-                includeFileName = line.replace(INCLUDE_TOKEN, "").trim();
+            if (line.trim().startsWith(IMPORT_TOKEN)) {
+                includeFileName = Import.parseLine(line).getPath();
                 buffer.append("\n\n\n");
                 buffer.append("/* " + includeFileName + " */");
                 buffer.append("\n\n");
@@ -121,6 +122,7 @@ public class ES5Aggregater implements Aggregater {
                     log.debug("IfNotProfile processing [" + profileName + "]");
                 }
             } else {
+                line = line.replace("export", "");
                 buffer.append(line);
                 buffer.append("\n");
             }

@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * @author Andy Chau on 7/9/20.
  */
-public class ES6Aggregater implements Aggregater {
+public class JsCompileAggregater implements Aggregater {
 
     static final String JS_SPEC = "ES6";
 

@@ -16,11 +16,11 @@ import static org.hamcrest.Matchers.*;
 /**
  * @author Andy Chau on 28/8/20.
  */
-public class JavascriptES5ContentServiceTest {
+public class JavascriptNoCompileContentServiceTest {
 
-    private static Logger log = LoggerFactory.getLogger(JavascriptES5ContentServiceTest.class);
+    private static Logger log = LoggerFactory.getLogger(JavascriptNoCompileContentServiceTest.class);
 
-    private JavascriptES5ContentService service;
+    private JavascriptNoCompileContentService service;
 
     private File es5Root = Paths.get( "ES5").toFile();
 
@@ -37,7 +37,7 @@ public class JavascriptES5ContentServiceTest {
     void shouldConstructAllMethodPass() throws IOException  {
         final Profiles emptyProfile = new Profiles();
 
-        service = new JavascriptES5ContentService(emptyProfile);
+        service = new JavascriptNoCompileContentService(emptyProfile);
 
         // test override methods
         assertThat(service.getSpec(), equalTo("ES5"));
@@ -66,7 +66,7 @@ public class JavascriptES5ContentServiceTest {
         // request to clean the cache then should clean.
         final Profiles noCompile = new Profiles(Profiles.NO_COMPILE);
 
-        service = new JavascriptES5ContentService(noCompile);
+        service = new JavascriptNoCompileContentService(noCompile);
 
         // to load the content into cache
         service.getContent(resourceRoot, indexPath, null);

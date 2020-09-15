@@ -15,22 +15,6 @@
         <url-pattern>/js/*</url-pattern>
     </servlet-mapping>
 
-    <!-- Javascript ES6 Aggregation -->
-    <servlet>
-        <servlet-name>jes6</servlet-name>
-        <servlet-class>tech.rsqn.utils.jjst.servlets.ES6JavascriptAggregationServlet</servlet-class>
-        <async-supported>false</async-supported>
-        <init-param>
-            <param-name>baseProfiles</param-name>
-            <param-value>nocache,nocompile</param-value>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>jes6</servlet-name>
-        <url-pattern>/jes6/*</url-pattern>
-    </servlet-mapping>
-
-
     <!-- Javascript Source -->
     <!--
     <servlet>
@@ -77,5 +61,11 @@
         <servlet-name>template</servlet-name>
         <url-pattern>/template/*</url-pattern>
     </servlet-mapping>
+
+    <!-- Static Files -->
+    <welcome-file-list>
+        <welcome-file>helloworld.html</welcome-file>
+        <welcome-file>helloworld.htm</welcome-file>
+    </welcome-file-list>
 
 </web-app>
