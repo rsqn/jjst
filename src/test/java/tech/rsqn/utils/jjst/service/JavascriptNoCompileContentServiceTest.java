@@ -22,14 +22,14 @@ public class JavascriptNoCompileContentServiceTest {
 
     private JavascriptNoCompileContentService service;
 
-    private File es5Root = Paths.get( "ES5").toFile();
+    private File nocompileRoot = Paths.get("nocompile").toFile();
 
     private File resourceRoot;
     private String indexPath;
 
     @BeforeEach
     void before() throws IOException {
-        resourceRoot = Paths.get(ResourceUtil.getResourceRoot(), es5Root.getPath()).toFile();
+        resourceRoot = Paths.get(ResourceUtil.getResourceRoot(), nocompileRoot.getPath()).toFile();
         indexPath = Paths.get("/", "js", "index.js").toString();
     }
 
@@ -40,9 +40,8 @@ public class JavascriptNoCompileContentServiceTest {
         service = new JavascriptNoCompileContentService(emptyProfile);
 
         // test override methods
-        assertThat(service.getSpec(), equalTo("ES5"));
+        assertThat(service.getType(), equalTo("javascript"));
         assertThat(service.getAggregater(), notNullValue());
-        assertThat(service.getAggregater().getSpec(), equalTo("ES5"));
         assertThat(service.processFileContent("abc"), equalTo("abc"));
         assertThat(service.postProcess("post"), equalTo("post"));
 
@@ -52,7 +51,6 @@ public class JavascriptNoCompileContentServiceTest {
         log.info("Content: {}", c);
 
         assertThat(c, containsString("/* /js/utils/util.js */"));
-        assertThat(c, containsString("/* /js/controller/controller.js */"));
         assertThat(c, not(containsString("DEBUG ME")));
 
 

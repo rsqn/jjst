@@ -25,7 +25,7 @@ public class ModuleScannerTest {
 
     @BeforeEach
     void before() throws IOException {
-        es6Root = Paths.get(ResourceUtil.getResourceRoot(), "ES6");
+        es6Root = Paths.get(ResourceUtil.getResourceRoot(), "compile");
         indexPath = Paths.get("/", "js", "index.js");
         fullIndexPath = Paths.get(es6Root.toString(), indexPath.toString());
     }

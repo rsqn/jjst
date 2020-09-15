@@ -13,6 +13,6 @@ public interface Aggregater {
             throws IOException;
 
 
-    String getSpec();
+    String getType();
 
 }

@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class JsCompileAggregater implements Aggregater {
 
-    static final String JS_SPEC = "ES6";
+    static final String TYPE = "javascript";
 
     /**
      * With ES6 aggregater will scan all files in the given directory and preprocess all content.
@@ -45,8 +45,8 @@ public class JsCompileAggregater implements Aggregater {
     }
 
     @Override
-    public String getSpec() {
-        return JS_SPEC;
+    public String getType() {
+        return TYPE;
     }
 
     private StringBuffer buildOutput(final StringBuffer buffer, final ModuleScanner scanner) throws IOException {

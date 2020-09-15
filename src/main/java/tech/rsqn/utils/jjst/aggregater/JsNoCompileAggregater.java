@@ -26,7 +26,7 @@ public class JsNoCompileAggregater implements Aggregater {
 
     private static Logger log = LoggerFactory.getLogger(JsNoCompileAggregater.class);
 
-    static final String JS_SPEC = "ES5";
+    static final String TYPE = "javascript";
 
     static final String IMPORT_TOKEN = "import";
     static final String IF_PROFILE_TOKEN = "#ifprofile";
@@ -44,8 +44,8 @@ public class JsNoCompileAggregater implements Aggregater {
     }
 
     @Override
-    public String getSpec() {
-        return JS_SPEC;
+    public String getType() {
+        return TYPE;
     }
 
     /**

@@ -13,7 +13,7 @@ public class CssContentService extends AbstractContentService {
     }
 
     @Override
-    protected String getSpec() {
+    protected String getType() {
         return "css";
     }
 

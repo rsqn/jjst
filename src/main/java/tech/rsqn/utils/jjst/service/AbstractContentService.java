@@ -58,13 +58,13 @@ public abstract class AbstractContentService {
         String contents = cache.get(cacheKey);
 
         if (contents == null || profiles.contains(NO_CACHE)) {
-            log.debug("{} - Profiles = {}", getSpec(), profiles);
+            log.debug("{} - Profiles = {}", getType(), profiles);
 
             contents = buildContent(cwd, path, profiles, cacheKey);
 
-            log.info("{} - Aggregation of {} complete", getSpec(), path);
+            log.info("{} - Aggregation of {} complete", getType(), path);
         } else {
-            log.trace("{} - Returning {} from cache ", getSpec(), path);
+            log.trace("{} - Returning {} from cache ", getType(), path);
         }
         return contents;
     }
@@ -101,7 +101,7 @@ public abstract class AbstractContentService {
        return content;
     }
 
-    protected abstract String getSpec();
+    protected abstract String getType();
 
     protected abstract String processFileContent(String content);
 

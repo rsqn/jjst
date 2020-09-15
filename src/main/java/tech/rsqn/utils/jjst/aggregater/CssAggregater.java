@@ -13,7 +13,7 @@ public class CssAggregater implements Aggregater {
     }
 
     @Override
-    public String getSpec() {
+    public String getType() {
         return "css";
     }
 

@@ -1,6 +1,5 @@
-ns("utils")
 
-utils.pingMe = function() {
+export function pingMe() {
     console.log("Pinging me");
 
     #ifprofile debug

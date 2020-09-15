@@ -20,8 +20,8 @@ public class JavascriptES6ContentService extends AbstractContentService {
 
 
     @Override
-    protected String getSpec() {
-        return aggregater.getSpec();
+    protected String getType() {
+        return aggregater.getType();
     }
 
     @Override
