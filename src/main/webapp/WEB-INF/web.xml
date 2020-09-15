@@ -1,0 +1,81 @@
+<web-app>
+
+    <!-- Javascript Aggregation -->
+    <servlet>
+        <servlet-name>jjs</servlet-name>
+        <servlet-class>tech.rsqn.utils.jjst.servlets.JavascriptAggregationServlet</servlet-class>
+        <async-supported>false</async-supported>
+        <init-param>
+            <param-name>baseProfiles</param-name>
+            <param-value>nocache,nocompile</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jjs</servlet-name>
+        <url-pattern>/js/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Javascript ES6 Aggregation -->
+    <servlet>
+        <servlet-name>jes6</servlet-name>
+        <servlet-class>tech.rsqn.utils.jjst.servlets.ES6JavascriptAggregationServlet</servlet-class>
+        <async-supported>false</async-supported>
+        <init-param>
+            <param-name>baseProfiles</param-name>
+            <param-value>nocache,nocompile</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jes6</servlet-name>
+        <url-pattern>/jes6/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- Javascript Source -->
+    <!--
+    <servlet>
+        <servlet-name>jsSource</servlet-name>
+        <servlet-class>tech.rsqn.utils.jjst.servlets.JavascriptSourceServlet</servlet-class>
+        <async-supported>false</async-supported>
+        <init-param>
+            <param-name>baseProfiles</param-name>
+            <param-value>nocache,nocompile</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jsSource</servlet-name>
+        <url-pattern>/js/source/*</url-pattern>
+    </servlet-mapping>
+    -->
+
+    <!-- CSS Aggregation -->
+    <servlet>
+        <servlet-name>cssAggregation</servlet-name>
+        <servlet-class>tech.rsqn.utils.jjst.servlets.CssAggregationServlet</servlet-class>
+        <async-supported>false</async-supported>
+        <init-param>
+            <param-name>baseProfiles</param-name>
+            <param-value>nocache,nocompile</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>cssAggregation</servlet-name>
+        <url-pattern>/css/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Template -->
+    <servlet>
+        <servlet-name>template</servlet-name>
+        <servlet-class>tech.rsqn.utils.jjst.servlets.TemplateServlet</servlet-class>
+        <async-supported>false</async-supported>
+        <init-param>
+            <param-name>baseProfiles</param-name>
+            <param-value>nocache,nocompile</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>template</servlet-name>
+        <url-pattern>/template/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
