@@ -1,5 +1,5 @@
 /**
- * Class to register function files.
+ * Class to register module files.
  */
 class ModuleRegistry {
     registryMap;

@@ -40,7 +40,7 @@ public class JavascriptES5ContentServiceTest {
         service = new JavascriptES5ContentService(emptyProfile);
 
         // test override methods
-        assertThat(service.jsSpec(), equalTo("ES5"));
+        assertThat(service.getSpec(), equalTo("ES5"));
         assertThat(service.getAggregater(), notNullValue());
         assertThat(service.getAggregater().getSpec(), equalTo("ES5"));
         assertThat(service.processFileContent("abc"), equalTo("abc"));

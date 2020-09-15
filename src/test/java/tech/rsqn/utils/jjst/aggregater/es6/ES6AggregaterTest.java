@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.rsqn.utils.jjst.aggregater.ES6Aggregater;
 import tech.rsqn.utils.jjst.util.ResourceUtil;
 
 import java.io.IOException;

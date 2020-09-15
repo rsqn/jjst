@@ -20,7 +20,7 @@ import static tech.rsqn.utils.jjst.util.ResourceUtil.getResource;
 public class FunctionTemplate {
 
     private static final String TEMPLATE_NAME = "module.wrapper.function.vm";
-    private static final String TEMPLATE_RESOURCES = Paths.get("/", "ES6", TEMPLATE_NAME).toString();
+    private static final String TEMPLATE_RESOURCES = Paths.get("/", "aggregate", "ES6", TEMPLATE_NAME).toString();
 
     private Properties engineProps;
     private VelocityEngine ve;

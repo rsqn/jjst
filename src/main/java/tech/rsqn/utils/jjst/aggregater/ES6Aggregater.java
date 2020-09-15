@@ -1,6 +1,6 @@
-package tech.rsqn.utils.jjst.aggregater.es6;
+package tech.rsqn.utils.jjst.aggregater;
 
-import tech.rsqn.utils.jjst.aggregater.Aggregater;
+import tech.rsqn.utils.jjst.aggregater.es6.ModuleScanner;
 import tech.rsqn.utils.jjst.aggregater.es6.module.Module;
 import tech.rsqn.utils.jjst.util.FileUtil;
 import tech.rsqn.utils.jjst.util.ResourceUtil;
@@ -63,7 +63,8 @@ public class ES6Aggregater implements Aggregater {
      * @return
      */
     private StringBuffer addModuleRegistry(final StringBuffer buffer) throws IOException {
-        final String resourcePath = ResourceUtil.getResource(Paths.get("/", "ES6", "module.registry.js").toString());
+        final String resourcePath = ResourceUtil.getResource(Paths.get("/",
+                "aggregate", "ES6", "module.registry.js").toString());
 
         buffer.append(FileUtil.getFileContents(new File(resourcePath)));
         return buffer;

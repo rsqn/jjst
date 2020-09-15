@@ -3,7 +3,6 @@ package tech.rsqn.utils.jjst.servlets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.rsqn.utils.jjst.service.AbstractContentService;
-import tech.rsqn.utils.jjst.service.JavascriptES5ContentService;
 import tech.rsqn.utils.jjst.service.Profiles;
 import tech.rsqn.utils.jjst.util.ContentCache;
 import tech.rsqn.utils.jjst.util.ResourceUtil;
@@ -31,12 +30,14 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
             baseProfiles = new Profiles();
         }
 
-        contentService = new JavascriptES5ContentService(baseProfiles);
+        contentService = this.createContextService(baseProfiles);
 
         log.info("Init completed with baseProfile: {}", baseProfiles);
     }
 
     protected abstract String getContentType();
+
+    protected abstract AbstractContentService createContextService(Profiles profiles);
 
     @Override
     protected String getContent(HttpServletRequest request) throws IOException {
