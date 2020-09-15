@@ -36,7 +36,7 @@ public interface ES6Regexs {
      *      'minusOne', './js/api/math.js'
      * </p>
      */
-    String REGEX_NAMED_IMPORT = "^import\\s\\{(.*)}\\sfrom\\s'(.*)'";
+    String REGEX_NAMED_IMPORT = "^import\\s\\{(.*)}\\sfrom\\s['\"](.*)['\"]";
     Pattern P_IMPORT_NAMED = Pattern.compile(REGEX_NAMED_IMPORT);
 
     /**
@@ -47,7 +47,7 @@ public interface ES6Regexs {
      * </p>
      * TODO add support to wild card import
      */
-    String REGEX_WILDCARD_IMPORT = "^import\\s\\*\\sas\\s(.*)\\sfrom\\s'(.*)'";
+    String REGEX_WILDCARD_IMPORT = "^import\\s\\*\\sas\\s(.*)\\sfrom\\s['\"](.*)['\"]";
     Pattern P_IMPORT_WILDCARD = Pattern.compile(REGEX_WILDCARD_IMPORT);
 
 }

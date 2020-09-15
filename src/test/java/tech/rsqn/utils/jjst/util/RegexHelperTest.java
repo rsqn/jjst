@@ -107,6 +107,12 @@ public class RegexHelperTest {
         assertThat(rst.get(0), equalTo("named"));
         assertThat(rst.get(1), equalTo("./path/file.js"));
 
+        rst = RegexHelper.match(p, "import {named} from \"./path/file.js\"");
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("named"));
+        assertThat(rst.get(1), equalTo("./path/file.js"));
+
+
         rst = RegexHelper.match(p, "import {name1, name2} from './path/file.js'");
         assertThat(rst.size(), equalTo(2));
         assertThat(rst.get(0), equalTo("name1, name2"));
@@ -119,6 +125,11 @@ public class RegexHelperTest {
 
         List<String> rst;
         rst = RegexHelper.match(p, "import * as wildcard from './path/file.js'");
+        assertThat(rst.size(), equalTo(2));
+        assertThat(rst.get(0), equalTo("wildcard"));
+        assertThat(rst.get(1), equalTo("./path/file.js"));
+
+        rst = RegexHelper.match(p, "import * as wildcard from \"./path/file.js\"");
         assertThat(rst.size(), equalTo(2));
         assertThat(rst.get(0), equalTo("wildcard"));
         assertThat(rst.get(1), equalTo("./path/file.js"));
