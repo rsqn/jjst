@@ -41,6 +41,6 @@ public class JsCompileAggregaterTest {
 
         assertThat(buf.toString(), containsString("class ModuleRegistry {"));
 
-        log.info(buf.toString());
+        log.info(System.lineSeparator() + buf.toString());
     }
 }

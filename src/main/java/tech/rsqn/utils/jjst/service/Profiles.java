@@ -24,6 +24,7 @@ public class Profiles {
     public static final String CLEAR_CACHE = "clearcache";
     public static final String NO_CACHE = "nocache";
     public static final String NO_COMPILE = "nocompile";
+    public static final String COMPILE = "compile";
 
     private static final Set<String> SUPPORTED_PROFILES =new HashSet<>(Arrays.asList(CLEAR_CACHE, NO_CACHE, NO_COMPILE));
 

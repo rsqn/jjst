@@ -19,3 +19,5 @@ class ModuleRegistry {
         return (this.registryMap.get(name))();
     }
 }
+// create instance of ModuleRegistry
+let mr = new ModuleRegistry();

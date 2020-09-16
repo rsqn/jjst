@@ -8,7 +8,7 @@ import tech.rsqn.utils.jjst.service.JavascriptNoCompileContentService;
 import tech.rsqn.utils.jjst.service.Profiles;
 
 public class JavascriptAggregationServlet extends AbstractAggregationServlet {
-    private static Logger log = LoggerFactory.getLogger(TemplateServlet.class);
+    private static Logger log = LoggerFactory.getLogger(JavascriptAggregationServlet.class);
 
     @Override
     protected String getContentType() {
@@ -16,11 +16,11 @@ public class JavascriptAggregationServlet extends AbstractAggregationServlet {
     }
 
     @Override
-    protected AbstractContentService createContextService(Profiles profiles) {
-        if (profiles.contains(Profiles.NO_COMPILE)) {
-            return new JavascriptNoCompileContentService(profiles);
-        } else {
+    protected AbstractContentService createContextService(Profiles profiles, String customProfile) {
+        if (customProfile.contains(Profiles.COMPILE) ||profiles.contains(Profiles.COMPILE)) {
             return new JavascriptES6ContentService(profiles);
+        } else {
+            return new JavascriptNoCompileContentService(profiles);
         }
     }
 }

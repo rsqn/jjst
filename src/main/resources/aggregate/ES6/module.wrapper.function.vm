@@ -1,3 +1,5 @@
+
+// Registering module file $module.path
 let $module.name = function() {
 #foreach ($m in $module.jsClass.classMembers)
     $m
@@ -12,4 +14,6 @@ let $module.name = function() {
 #end
     };
 };
-mr.register($module.path, $module.name);
+mr.register('$module.path', $module.name);
+// End register module file $module.name
+

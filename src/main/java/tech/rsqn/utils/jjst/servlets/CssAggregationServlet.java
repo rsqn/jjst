@@ -11,7 +11,7 @@ public class CssAggregationServlet extends AbstractAggregationServlet {
     }
 
     @Override
-    protected AbstractContentService createContextService(Profiles profiles) {
+    protected AbstractContentService createContextService(Profiles profiles, String customProfile) {
         return new CssContentService(profiles);
     }
 }

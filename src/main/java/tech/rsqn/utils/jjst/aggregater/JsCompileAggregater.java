@@ -1,5 +1,8 @@
 package tech.rsqn.utils.jjst.aggregater;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import tech.rsqn.utils.jjst.aggregater.es6.FunctionTemplate;
 import tech.rsqn.utils.jjst.aggregater.es6.ModuleScanner;
 import tech.rsqn.utils.jjst.aggregater.es6.module.Module;
 import tech.rsqn.utils.jjst.util.FileUtil;
@@ -17,6 +20,8 @@ import java.util.Objects;
  * @author Andy Chau on 7/9/20.
  */
 public class JsCompileAggregater implements Aggregater {
+
+    private static Logger log = LoggerFactory.getLogger(JsCompileAggregater.class);
 
     static final String TYPE = "javascript";
 
@@ -53,6 +58,23 @@ public class JsCompileAggregater implements Aggregater {
         final Map<String, Module> scan = scanner.scan();
 
         this.addModuleRegistry(buffer);
+
+        // this is the root index file need to process last
+        final Module rootIdx = scan.get(scanner.getIndexFile());
+
+        // register modules other than the root file
+        scan.entrySet().forEach(e -> {
+            if (!e.getKey().equals(scanner.getIndexFile())) {
+                try {
+                    String func = new FunctionTemplate().generateFunction(e.getValue());
+                    buffer.append(func);
+                } catch (IOException ex) {
+                    final String err = String.format("Unable to convert module to function template: %s", e.getKey());
+                    log.error(err, ex);
+                    throw new RuntimeException(err, ex);
+                }
+            }
+        });
 
         return buffer;
     }

@@ -19,7 +19,6 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
     private static final ContentCache<String, String> cache = new ContentCache<>();
 
     private Profiles baseProfiles;
-    private AbstractContentService contentService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -30,14 +29,12 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
             baseProfiles = new Profiles();
         }
 
-        contentService = this.createContextService(baseProfiles);
-
         log.info("Init completed with baseProfile: {}", baseProfiles);
     }
 
     protected abstract String getContentType();
 
-    protected abstract AbstractContentService createContextService(Profiles profiles);
+    protected abstract AbstractContentService createContextService(Profiles profiles, String customProfile);
 
     @Override
     protected String getContent(HttpServletRequest request) throws IOException {
@@ -46,6 +43,8 @@ public abstract class AbstractAggregationServlet extends AbstractContentServlet 
         final String contentPath = request.getRequestURI();
 
         final String profileArgs = request.getParameter("profiles");
+
+        final AbstractContentService contentService = this.createContextService(baseProfiles, profileArgs);
 
         return contentService.getContent(cwd, contentPath, profileArgs);
     }
