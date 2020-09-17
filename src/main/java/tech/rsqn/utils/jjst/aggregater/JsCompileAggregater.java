@@ -10,7 +10,6 @@ import tech.rsqn.utils.jjst.util.ResourceUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Map;
@@ -43,8 +42,7 @@ public class JsCompileAggregater implements Aggregater {
         Objects.requireNonNull(cwd, "Parameter cwd is required");
         Objects.requireNonNull(jsFilePath, "Parameter jsFilePath is required");
 
-        final Path fullPath = Paths.get(cwd.getPath(), jsFilePath);
-        final ModuleScanner scanner = new ModuleScanner(fullPath.toString());
+        final ModuleScanner scanner = new ModuleScanner(cwd.toPath(), Paths.get(jsFilePath));
 
         this.buildOutput(buffer, scanner);
     }
@@ -55,15 +53,15 @@ public class JsCompileAggregater implements Aggregater {
     }
 
     private StringBuffer buildOutput(final StringBuffer buffer, final ModuleScanner scanner) throws IOException {
-        final Map<String, Module> scan = scanner.scan();
+        final Map<String, Module> moduleMap = scanner.scan();
 
         this.addModuleRegistry(buffer);
 
         // this is the root index file need to process last
-        final Module rootIdx = scan.get(scanner.getIndexFile());
+        final Module rootIdx = moduleMap.get(scanner.getIndexFile());
 
         // register modules other than the root file
-        scan.entrySet().forEach(e -> {
+        moduleMap.entrySet().forEach(e -> {
             if (!e.getKey().equals(scanner.getIndexFile())) {
                 try {
                     String func = new FunctionTemplate().generateFunction(e.getValue());

@@ -1,9 +1,9 @@
 // File: index.js
 
-import {doubleIt} from './js/tools.js'
-import {User} from './js/user.js'
-import {ApiTools} from './js/api/tools.js'
-import * as math from './js/api/math.js'
+import {doubleIt} from './tools.js'
+import {User} from './user.js'
+import {ApiTools} from './api/tools.js'
+import * as math from './api/math.js'
 
 // TODO add support to below:
 //import { addOne, minusOne } from "./js/api/math.js"

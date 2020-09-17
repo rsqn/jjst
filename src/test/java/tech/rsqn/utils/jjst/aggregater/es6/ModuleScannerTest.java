@@ -19,43 +19,48 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class ModuleScannerTest {
 
-    Path es6Root;
+    Path resourceRoot;
     Path indexPath;
     Path fullIndexPath;
 
     @BeforeEach
     void before() throws IOException {
-        es6Root = Paths.get(ResourceUtil.getResourceRoot(), "compile");
+        resourceRoot = Paths.get(ResourceUtil.getResourceRoot(), "compile");
         indexPath = Paths.get("/", "js", "index.js");
-        fullIndexPath = Paths.get(es6Root.toString(), indexPath.toString());
     }
 
     @Test
     void shouldHandleConstruction() {
 
-        final ModuleScanner mr = new ModuleScanner(fullIndexPath.toString());
-        assertThat(mr.getRootPath(), equalTo(Paths.get(es6Root.toString(), "js")));
+        final ModuleScanner mr = new ModuleScanner(resourceRoot, indexPath);
+        assertThat(mr.getIndexPath(), equalTo(Paths.get(resourceRoot.toString(), "js")));
         assertThat(mr.getIndexFile(), equalTo("index.js"));
 
         // negative cases
-        assertThrows(NullPointerException.class, () -> new ModuleScanner(null));
-        assertThrows(IllegalArgumentException.class, () -> new ModuleScanner("/js/index.js"));
+        assertThrows(NullPointerException.class, () -> new ModuleScanner(null, indexPath));
+        assertThrows(NullPointerException.class, () -> new ModuleScanner(resourceRoot, null));
+        assertThrows(IllegalArgumentException.class, () ->
+                new ModuleScanner(resourceRoot, Paths.get("index.html")));
     }
 
     @Test
     void shouldLoadModules() throws IOException {
-        final ModuleScanner mr = new ModuleScanner(fullIndexPath.toString());
+        final ModuleScanner mr = new ModuleScanner(resourceRoot, indexPath);
+
+        assertThat(mr.getIndexFile(), equalTo("/js/index.js"));
+        assertThat(mr.getIndexPath().toString(), endsWith("/compile/js"));
 
         final Map<String, Module> rst = mr.scan();
 
-        assertThat(rst.get("index.js").getLines().size(), greaterThan(1));
-        // There is comment line which will be trigger
-        //assertThat(rst.get("index.js").getDefinitions().getExports().size(), equalTo(0));
-
-        assertThat(rst.get("js/tools.js"), notNullValue());
-        assertThat(rst.get("js/api/tools.js"), notNullValue());
+        assertThat(rst.get("js/index.js").getLines().size(), greaterThan(1));
+        assertThat(rst.get("js/index.js").getFullContent(), startsWith("// File: index.js"));
 
         assertThat(rst.get("js/user.js").getLines().size(), greaterThan(1));
+        assertThat(rst.get("js/tools.js"), notNullValue());
+
+        assertThat(rst.get("js/api/tools.js"), notNullValue());
+        assertThat(rst.get("js/api/math.js"), notNullValue());
+
 
         assertThat(mr.getMap(), equalTo(rst));
     }

@@ -28,44 +28,54 @@ public class ModuleScanner {
     private Map<String, Module> map;
 
     /**
-     * The path to the index file.
+     * The system resource path.
      */
-    private Path rootPath;
+    private Path resourcePath;
+
     /**
      * The index file name
      */
     private String indexFile;
 
     /**
+     * The path to the index file.
+     */
+    private Path indexPath;
+
+
+    /**
      * Constructor to create module register, this class will refer
      * the path to the index.js as working root directory.
      *
-     * @param rootIndex The system path to the root index js file.
+     * @param resourcePath The system path to the resources
+     * @param rootIndex The relative path to the root index js file, e.g. /js/index.js
      * @throws NullPointerException     when parameter rootIndex is null
      * @throws IllegalArgumentException when parameter rootIndex does not exist in file system.
      */
-    public ModuleScanner(final String rootIndex) {
+    public ModuleScanner(final Path resourcePath, final Path rootIndex) {
+        Objects.requireNonNull(resourcePath, "Parameter resourcePath is required");
         Objects.requireNonNull(rootIndex, "Parameter rootIndex is required");
 
         // checking the file exist in the system or not.
 
-        final File f = new File(rootIndex);
+        final File f = new File(resourcePath.toString() + rootIndex.toString());
         if (!f.exists()) {
             // file not exist in the path
             throw new IllegalArgumentException(
                     String.format("rootIndex: %s does not exist in file system!", rootIndex));
         }
 
-        this.rootPath = Paths.get(f.getParentFile().toURI());
-        this.indexFile = f.getName();
+        this.resourcePath = resourcePath;
+        this.indexPath = Paths.get(f.getParentFile().toURI());
+        this.indexFile = rootIndex.toString();
         this.map = new HashMap<>();
 
-        log.info("Loading modules begin from location: {}, indexFile: {}", rootPath, indexFile);
+        log.info("Loading modules begin from location: {}, indexFile: {}", indexPath, indexFile);
         // load modules
     }
 
-    public Path getRootPath() {
-        return rootPath;
+    public Path getIndexPath() {
+        return indexPath;
     }
 
     public String getIndexFile() {
@@ -86,7 +96,7 @@ public class ModuleScanner {
     public Map<String, Module> scan() throws IOException {
 
         // walk through from the root
-        FileUtil.scanDirectory(rootPath, "js", "jsx")
+        FileUtil.scanDirectory(indexPath, "js", "jsx")
                 .forEach((p -> {
                     try {
                         this.readFromPath(p);
@@ -99,29 +109,9 @@ public class ModuleScanner {
 
     private void readFromPath(final Path p) throws IOException {
         final String content = FileUtil.readFileContent(p);
-        final String name = rootPath.relativize(p).toString();
+        final String name = resourcePath.relativize(p).toString();
 
         map.put(name, new Module(name, content));
-    }
-
-    /**
-     * @param cwd      Current working directory
-     * @param filename The module file name
-     */
-    private void readModules(final Path cwd, final String filename) {
-
-        // TODO
-        // Considerations:
-        // 1. modules from root path never changes
-        // 2. contain of a module doesn't change
-        // 3. only import from different model changes
-
-
-        // Therefore:
-        // When process each modules' import either:
-        // - consider the path relative to the module (faster)
-        // - just go read the file content and lookup and compare the value (slower)
-
     }
 
 }
