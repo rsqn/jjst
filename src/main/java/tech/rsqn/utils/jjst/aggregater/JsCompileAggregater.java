@@ -62,7 +62,7 @@ public class JsCompileAggregater implements Aggregater {
 
         // register modules other than the root file
         moduleMap.entrySet().forEach(e -> {
-            if (!e.getKey().equals(scanner.getIndexFile())) {
+            if (!(scanner.getIndexFile().equals(e.getKey()))) {
                 try {
                     String func = new FunctionTemplate().generateFunction(e.getValue());
                     buffer.append(func);

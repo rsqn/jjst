@@ -109,7 +109,7 @@ public class ModuleScanner {
 
     private void readFromPath(final Path p) throws IOException {
         final String content = FileUtil.readFileContent(p);
-        final String name = resourcePath.relativize(p).toString();
+        final String name = "/" + resourcePath.relativize(p).toString();
 
         map.put(name, new Module(name, content));
     }

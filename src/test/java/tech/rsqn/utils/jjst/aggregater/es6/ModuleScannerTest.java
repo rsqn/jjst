@@ -34,7 +34,9 @@ public class ModuleScannerTest {
 
         final ModuleScanner mr = new ModuleScanner(resourceRoot, indexPath);
         assertThat(mr.getIndexPath(), equalTo(Paths.get(resourceRoot.toString(), "js")));
-        assertThat(mr.getIndexFile(), equalTo("index.js"));
+        assertThat(mr.getIndexFile(), equalTo("/js/index.js"));
+        assertThat(mr.getIndexPath().toString(), endsWith("/compile/js"));
+
 
         // negative cases
         assertThrows(NullPointerException.class, () -> new ModuleScanner(null, indexPath));
@@ -47,19 +49,16 @@ public class ModuleScannerTest {
     void shouldLoadModules() throws IOException {
         final ModuleScanner mr = new ModuleScanner(resourceRoot, indexPath);
 
-        assertThat(mr.getIndexFile(), equalTo("/js/index.js"));
-        assertThat(mr.getIndexPath().toString(), endsWith("/compile/js"));
-
         final Map<String, Module> rst = mr.scan();
 
-        assertThat(rst.get("js/index.js").getLines().size(), greaterThan(1));
-        assertThat(rst.get("js/index.js").getFullContent(), startsWith("// File: index.js"));
+        assertThat(rst.get("/js/index.js").getLines().size(), greaterThan(1));
+        assertThat(rst.get("/js/index.js").getFullContent(), startsWith("// File: index.js"));
 
-        assertThat(rst.get("js/user.js").getLines().size(), greaterThan(1));
-        assertThat(rst.get("js/tools.js"), notNullValue());
+        assertThat(rst.get("/js/user.js").getLines().size(), greaterThan(1));
+        assertThat(rst.get("/js/tools.js"), notNullValue());
 
-        assertThat(rst.get("js/api/tools.js"), notNullValue());
-        assertThat(rst.get("js/api/math.js"), notNullValue());
+        assertThat(rst.get("/js/api/tools.js"), notNullValue());
+        assertThat(rst.get("/js/api/math.js"), notNullValue());
 
 
         assertThat(mr.getMap(), equalTo(rst));
