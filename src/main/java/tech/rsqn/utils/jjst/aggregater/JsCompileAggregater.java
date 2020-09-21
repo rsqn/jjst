@@ -2,8 +2,9 @@ package tech.rsqn.utils.jjst.aggregater;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.rsqn.utils.jjst.aggregater.es6.FunctionTemplate;
 import tech.rsqn.utils.jjst.aggregater.es6.ModuleScanner;
+import tech.rsqn.utils.jjst.aggregater.es6.RootModuleTemplate;
+import tech.rsqn.utils.jjst.aggregater.es6.WrapperModuleTemplate;
 import tech.rsqn.utils.jjst.aggregater.es6.module.Module;
 import tech.rsqn.utils.jjst.util.FileUtil;
 import tech.rsqn.utils.jjst.util.ResourceUtil;
@@ -62,15 +63,19 @@ public class JsCompileAggregater implements Aggregater {
 
         // register modules other than the root file
         moduleMap.entrySet().forEach(e -> {
-            if (!(scanner.getIndexFile().equals(e.getKey()))) {
-                try {
-                    String func = new FunctionTemplate().generateFunction(e.getValue());
+            try {
+                if (!(scanner.getIndexFile().equals(e.getKey()))) {
+                    String func = new WrapperModuleTemplate().generateFunction(e.getValue());
                     buffer.append(func);
-                } catch (IOException ex) {
-                    final String err = String.format("Unable to convert module to function template: %s", e.getKey());
-                    log.error(err, ex);
-                    throw new RuntimeException(err, ex);
+                } else {
+                    // this index file no require to use function template
+                    String func = new RootModuleTemplate().generateFunction(e.getValue());
+                    buffer.append(func);
                 }
+            } catch (IOException ex) {
+                final String err = String.format("Unable to convert module to function template: %s", e.getKey());
+                log.error(err, ex);
+                throw new RuntimeException(err, ex);
             }
         });
 
@@ -79,6 +84,7 @@ public class JsCompileAggregater implements Aggregater {
 
     /**
      * Method to add the {@code module.registry.js} at the beginning of buffer.
+     *
      * @param buffer
      * @return
      */

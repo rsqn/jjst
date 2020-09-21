@@ -124,6 +124,11 @@ import {myapp} from 'apps/myapp.js'
 mvn tomcat7:run
 ```
 
-Visit http://localhost:8080/ or http://localhost:8080/helloworld.html
+#### Aggregate without compile
+http://localhost:8080/ or http://localhost:8080/helloworld_nocomile.html
+
+
+#### Aggregate with compile
+http://localhost:8080/helloworld_comile.html
 
 

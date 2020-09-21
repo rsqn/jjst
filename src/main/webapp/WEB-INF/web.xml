@@ -64,8 +64,8 @@
 
     <!-- Static Files -->
     <welcome-file-list>
-        <welcome-file>helloworld.html</welcome-file>
-        <welcome-file>helloworld.htm</welcome-file>
+        <welcome-file>helloworld_nocompile.html</welcome-file>
+        <welcome-file>helloworld_nocompile.htm</welcome-file>
     </welcome-file-list>
 
 </web-app>

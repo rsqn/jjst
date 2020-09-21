@@ -28,16 +28,25 @@ public class Module {
     private String name;
     private String path;
     private String fullContent;
-    private List<String> lines = new ArrayList<>();
+    private int numberOfLines;
     private List<Import> imports = new ArrayList<>();
     private List<JsFunction> jsFuncs = new ArrayList<>();
     private JsClass jsClass;
 
+    /**
+     * Constructor.
+     * @param path The path of the module relative to the root of index directory.
+     * @param fullContent The original full content.
+     */
     public Module(final String path, final String fullContent) {
         this.path = path;
         this.fullContent = fullContent;
         this.name = FilenameUtils.removeExtension(Paths.get(path).toFile().getName()) + "JS_Fn";
-        this.parseModule();
+
+        final List<String> lines = Arrays.asList(fullContent.split(System.lineSeparator()));
+        this.numberOfLines = lines.size();
+
+        this.parseModule(lines);
     }
 
     public String getName() {
@@ -52,8 +61,8 @@ public class Module {
         return fullContent;
     }
 
-    public List<String> getLines() {
-        return lines;
+    public int getNumberOfLines() {
+        return numberOfLines;
     }
 
     public List<Import> getImports() {
@@ -78,9 +87,8 @@ public class Module {
         return jsClass;
     }
 
-    private void parseModule() {
+    private void parseModule(final List<String> lines) {
         final AtomicInteger lineIdx = new AtomicInteger(0);
-        lines = Arrays.asList(fullContent.split(System.lineSeparator()));
 
         boolean captureBody = false;
         boolean blockOpened = false;
@@ -155,10 +163,29 @@ public class Module {
 
                 } else if (curJsObj.getType().equals(BaseJsObject.Type.FUNCTION)) {
                     // need to capture function body
-                    ((JsFunction) curJsObj).addBodyLine(l);
+                    ((JsFunction) curJsObj).addBodyLine(this.replaceImport(l));
                 }
             }
         }
+    }
+
+    private String replaceImport(final String l) {
+        if (imports.isEmpty()) {
+            return l;
+        }
+
+        final StringBuffer lBuf = new StringBuffer();
+        imports.stream().forEach(i -> {
+            i.getNames().forEach(n -> {
+                if (l.contains(n)) {
+                    final String replace = String.format("mr.get('%s').%s", i.getPath(), n);
+                    lBuf.append(l.replace(n, replace));
+                } else {
+                    lBuf.append(l);
+                }
+            });
+        });
+        return lBuf.toString();
     }
 
     private BaseJsObject parseLine(final String l, final int n) {
@@ -247,7 +274,7 @@ public class Module {
                 }
 
                 // need to capture function body
-                workingFunc.addBodyLine(l);
+                workingFunc.addBodyLine(replaceImport(l));
 
                 continue;
             }

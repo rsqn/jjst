@@ -17,7 +17,7 @@ import static tech.rsqn.utils.jjst.util.ResourceUtil.getResource;
 /**
  * @author Andy Chau on 14/9/20.
  */
-public class FunctionTemplate {
+public class WrapperModuleTemplate {
 
     private static final String TEMPLATE_NAME = "module.wrapper.function.vm";
     private static final String TEMPLATE_RESOURCES = Paths.get("/", "aggregate", "ES6", TEMPLATE_NAME).toString();
@@ -26,7 +26,7 @@ public class FunctionTemplate {
     private VelocityEngine ve;
     private Template template;
 
-    public FunctionTemplate() throws IOException {
+    public WrapperModuleTemplate() throws IOException {
         final String resourcePath = Paths.get(getResource(TEMPLATE_RESOURCES)).getParent().toString();
         engineProps = new Properties();
         engineProps.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, resourcePath);

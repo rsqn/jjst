@@ -14,9 +14,9 @@ import static tech.rsqn.utils.jjst.TestUtils.concatList;
 /**
  * @author Andy Chau on 14/9/20.
  */
-public class FunctionTemplateTest {
+public class WrapperModuleTemplateTest {
 
-    Logger log = LoggerFactory.getLogger(FunctionTemplateTest.class);
+    Logger log = LoggerFactory.getLogger(WrapperModuleTemplateTest.class);
 
     @Test
     void shouldConvertClassModule() throws IOException {
@@ -45,9 +45,12 @@ public class FunctionTemplateTest {
 
         final Module module = new Module("MyClass.js", concatList(contentLines));
 
-        final FunctionTemplate template = new FunctionTemplate();
+        final WrapperModuleTemplate template = new WrapperModuleTemplate();
         String rst = template.generateFunction(module);
 
         log.info(System.lineSeparator() + rst);
+
+
+        // TODO add more test case validate line by line
     }
 }

@@ -1,0 +1,8 @@
+// Root index file $module.path
+#foreach($func in $module.joinedFuncs)
+function $func.name$func.params {
+    #foreach($bodyLine in $func.bodyLines)
+    $bodyLine
+    #end
+};
+#end

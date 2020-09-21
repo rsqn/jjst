@@ -51,10 +51,10 @@ public class ModuleScannerTest {
 
         final Map<String, Module> rst = mr.scan();
 
-        assertThat(rst.get("/js/index.js").getLines().size(), greaterThan(1));
+        assertThat(rst.get("/js/index.js").getNumberOfLines(), greaterThan(1));
         assertThat(rst.get("/js/index.js").getFullContent(), startsWith("// File: index.js"));
 
-        assertThat(rst.get("/js/user.js").getLines().size(), greaterThan(1));
+        assertThat(rst.get("/js/user.js").getNumberOfLines(), greaterThan(1));
         assertThat(rst.get("/js/tools.js"), notNullValue());
 
         assertThat(rst.get("/js/api/tools.js"), notNullValue());
